@@ -1,0 +1,640 @@
+// Implements the game of Snake using MD_MAXPanel library
+//
+// Hardware used
+// =============
+// LEFT_PIN   - move left switch, INPUT_PULLUP
+// RIGHT_PIN  - move right switch, INPUT_PULLUP
+// UP_PIN     - move up switch, INPUT_PULLUP
+// DOWN_PIN   - move down switch, INPUT_PULLUP
+// BEEPER_PIN - piezo speaker
+// CLK_PIN, DATA_PIN, CS_PIN - LED matrix display connections
+//
+// IMPORTANT
+// =========
+// MD_MAX72xx library must be installed and configured for the LED
+// matrix type being used. Refer documentation included in the MD_MAX72xx
+// library or see this link:
+// https://majicdesigns.github.io/MD_MAX72XX/page_hardware.html
+//
+// Rules of the Game
+// =================
+// Guide the snake around the screen using the direction keys. Running into
+// a pill will increase the length of the snake. Running into the sides or 
+// the snake will end the game.
+
+#include <MD_MAXPanel.h>
+#include "Font5x3.h"
+
+// Turn on debug statements to the serial output
+#define  DEBUG  0
+
+#if  DEBUG
+#define PRINT(s, x)    { Serial.print(F(s)); Serial.print(x); }
+#define PRINTS(x)      { Serial.print(F(x)); }
+#define PRINTD(x)      { Serial.print(x, DEC); }
+#define PRINTXY(s,x,y) { Serial.print(F(s)); Serial.print(F("(")); Serial.print(x); Serial.print(F(",")); Serial.print(y); Serial.print(")"); }
+#define PRINTSTATE(s)  { Serial.print("\n++>"); Serial.print(s); }
+
+#else
+#define PRINT(s, x)
+#define PRINTS(x)
+#define PRINTD(x)
+#define PRINTXY(s,x,y)
+#define PRINTSTATE(s)
+
+#endif
+
+// Hardware pin definitions. 
+// All momentary on switches are initialized PULLUP
+const uint8_t BEEPER_PIN = 3;
+const uint8_t LEFT_PIN = 4;
+const uint8_t RIGHT_PIN = 5;
+const uint8_t UP_PIN = 6;
+const uint8_t DOWN_PIN = 7;
+
+// Define the number of devices in the chain and the SPI hardware interface
+// NOTE: These pin numbers will probably not work with your hardware and may
+// need to be adapted
+const uint8_t X_DEVICES = 4;
+const uint8_t Y_DEVICES = 5;
+
+const uint8_t CLK_PIN = 12;   // or SCK
+const uint8_t DATA_PIN = 11;  // or MOSI
+const uint8_t CS_PIN = 10;    // or SS
+
+// SPI hardware interface
+MD_MAXPanel mp = MD_MAXPanel(CS_PIN, X_DEVICES, Y_DEVICES);
+// Arbitrary pins
+// MD_MAXPanel mx = MD_MAXPanel(DATA_PIN, CLK_PIN, CS_PIN, X_DEVICES, Y_DEVICES);
+
+uint16_t FIELD_TOP, FIELD_RIGHT;    // needs to be initialised in setup()
+const uint16_t FIELD_LEFT = 0;
+const uint16_t FIELD_BOTTOM = 0;
+
+const uint8_t SNAKE_SIZE_DEFAULT = 2;
+
+const char TITLE_TEXT[] = "SNAKE";
+const uint16_t SPLASH_DELAY =3000;     // in milliseconds
+
+const char GAME_TEXT[] = "GAME";
+const char OVER_TEXT[] = "OVER";
+const uint16_t GAME_OVER_DELAY = 3000;   // in milliseconds
+
+const uint8_t MAX_LENGTH = 999;
+
+const uint8_t FONT_NUM_WIDTH = 3;
+const uint16_t MAX_SCORE = MAX_LENGTH;
+const uint16_t MAX_FOOD = 99;
+
+const uint8_t RANDOM_SEED_PORT = A0;    // port read for random seed
+
+// A class to encapsulate the snake direction switches
+// Can move up, down, left, right
+class cMoveSW
+{
+private:
+  uint8_t  _pinLeft;
+  uint8_t  _pinRight;
+  uint8_t  _pinUp;
+  uint8_t  _pinDown;
+  uint16_t _batDelay;   // the delay between switch detection
+  uint32_t _timeLastMove; // the millis() value for the last time we checked
+
+public:
+  enum moveType_t { MOVE_NONE, MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT };
+
+  void begin(uint8_t pinL, uint8_t pinR, uint8_t pinU, uint8_t pinD)
+  {
+    _pinLeft = pinL;
+    _pinRight = pinR;
+    _pinUp = pinU;
+    _pinDown = pinD;
+    pinMode(_pinLeft, INPUT_PULLUP);
+    pinMode(_pinRight, INPUT_PULLUP);
+    pinMode(_pinUp, INPUT_PULLUP);
+    pinMode(_pinDown, INPUT_PULLUP);
+  }
+
+  bool anyKey(void) { return (move() != MOVE_NONE);}
+
+  moveType_t move(void)
+  {
+    if (digitalRead(_pinLeft) == LOW)
+      return(MOVE_LEFT);
+    else if (digitalRead(_pinRight) == LOW)
+      return(MOVE_RIGHT);
+    else if (digitalRead(_pinUp) == LOW)
+      return(MOVE_UP);
+    else if (digitalRead(_pinDown) == LOW)
+      return(MOVE_DOWN);
+      
+    return(MOVE_NONE);
+  }
+};
+
+// A class to encapsulate the score display
+class cScore
+{
+private:
+  int16_t _score;    // the score
+  uint16_t _x, _y;    // coordinate of top left for display
+  uint8_t _width;     // number of digits wide
+  uint16_t _limit;    // maximum value allowed
+
+public:
+  void begin(uint16_t x, uint16_t y, uint16_t maxScore) { _x = x, _y = y; limit(maxScore); reset(); }
+  void reset(void)       { erase(); _score = 0; draw(); }
+  void set(uint16_t s)   { if (s <= _limit) { erase(); _score = s; draw(); } }
+  void increment(uint16_t inc = 1) { if (_score + inc <= _limit) { erase(); _score += inc; draw(); } }
+  void decrement(uint16_t dec = 1) { if (_score - dec >= 0) { erase(); _score -= dec; draw(); } }
+  uint16_t score(void)   { return(_score); }
+  void erase(void)       { draw(false); }
+  uint16_t width(void)   { return(_width); }
+
+  void limit(uint16_t m) 
+  { 
+    erase();    // width may change, so delete with the curret parameters
+      
+    _limit = m; 
+    // work out how many digits this is
+    _width = 0;
+    do 
+    {
+      _width++;
+      m /= 10;
+    } while (m != 0);
+  }
+
+  void draw(bool state = true)
+  {
+    char sz[_width + 1];
+    uint16_t s = _score;
+
+    sz[_width] = '\0';
+    for (int i = _width - 1; i >= 0; --i)
+    {
+      sz[i] = (s % 10) + '0';
+      s /= 10;
+    }
+
+    mp.drawText(_x, _y, sz, MD_MAXPanel::ROT_0, state);
+  }
+};
+
+// A class to encapsulate the food pill
+class cPill
+{
+private:
+  uint16_t _x, _y;        // pill coordinates
+  uint16_t _xmin, _xmax;  // boundaries for the creation of the pill
+  uint16_t _ymin, _ymax;
+  uint8_t  _value;        // value of the pill
+
+public:
+  void begin(uint16_t xmin, uint16_t ymin, uint16_t xmax, uint16_t ymax)
+  {
+    _value = 0;
+    _xmin = xmin;
+    _xmax = xmax;
+    _ymin = ymin;
+    _ymax = ymax;
+    PRINTXY("\n-- PILL boundaries ", _xmin, _ymin);
+    PRINTXY(" to ", _xmax, _ymax);
+  }
+
+  uint16_t getX(void) { return(_x); }
+  uint16_t getY(void) { return(_y); }
+  uint8_t getValue(void) { return(_value); }
+
+  void reset(void)
+  {
+    do  // search for an unused space
+    {
+      _x = _xmin + (random(_xmax - _xmin + 1));
+      _y = _ymin + (random(_ymax - _ymin + 1));
+      //PRINTXY("\n--- PILL TEST ", _x, _y);
+    } while (mp.getPoint(_x, _y));
+
+    _value = random(10);
+    PRINTXY("\n-- PILL @", _x, _y);
+    PRINT(" worth ", _value);
+
+    mp.setPoint(_x, _y, true);
+  }
+};
+
+// A class to encapsulate the snake
+class cSnake
+{
+private:
+  struct snakeNode_t
+  {
+    uint8_t x, y;       // coordinate for this body segment. This is UINT*_T to save 
+                        // RAM, could overflow with larger displays
+    snakeNode_t *next;  // the next in the linked list
+  };
+
+  snakeNode_t *_head;     // the head segment of the snake
+  snakeNode_t *_tail;     // the tail segment of the snake
+  snakeNode_t *_deleted;  // deleted blocks list
+  int8_t   _dx, _dy;      // the movement offsets for the x and y direction
+  uint32_t _timeLastMove; // last time the snake was moved
+  uint16_t _moveDelay;    // the delay between moves in milliseconds
+  bool     _run;          // snake is moving when true
+  cScore  *_pFoodCount;   // the food counter
+
+  void draw(uint16_t x, uint16_t y)  { mp.setPoint(x, y, true); } 
+  void erase(uint16_t x, uint16_t y) { mp.setPoint(x, y, false); }
+
+  snakeNode_t *add(uint16_t x, uint16_t y)
+  // add a body segment to the tail
+  // the list is stored from tail to head
+  {
+    snakeNode_t *psn;
+    
+    if (_deleted == nullptr)
+      psn = new snakeNode_t;
+    else
+    {
+      // take one from the head of the deleted list
+      psn = _deleted;
+      _deleted = _deleted->next;
+    }
+
+    if (psn != nullptr)
+    {
+      psn->x = x;
+      psn->y = y;
+      if (_tail == nullptr)
+      {
+        psn->next = nullptr;
+        _head = _tail = psn;    // the first segment
+        PRINTS("\n-- SNAKE added first element");
+      }
+      else
+      {
+        psn->next = _tail;
+        _tail = psn;
+        PRINTS("\n-- SNAKE added element");
+      }
+    }
+    return(psn);
+  }
+
+  void deleteAll()
+  // delete all the body segments in the snake
+  {
+    snakeNode_t *psn;
+    uint16_t count = 0;
+
+    while (_tail != nullptr)
+    {
+      // adjust the linked list by consuming from the tail
+      psn = _tail;
+      _tail = _tail->next;
+
+      // put the block in the deleted list
+      psn->next = _deleted;
+      _deleted = psn;
+
+      count++;
+    }
+    _head = nullptr;
+
+    PRINT("\n-- SNAKE nodes deleted: ", count);
+  }
+
+public:
+  enum moveType_t { MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT };
+
+  uint16_t getHeadX(void) { return (_head->x); }
+  uint16_t getHeadY(void) { return (_head->y); }
+
+  uint16_t getDelay(void) { return (_moveDelay); }
+  void setDelay(uint16_t delay) { if (delay > 10) _moveDelay = delay; }
+
+  void start(void) { _run = true; }
+  void stop(void)  { _run = false; }
+
+  void setDirection(moveType_t d)
+  {
+    switch (d)
+    {
+    case MOVE_UP:    _dx = 0;  _dy = 1;  break;
+    case MOVE_DOWN:  _dx = 0;  _dy = -1; break;
+    case MOVE_LEFT:  _dx = -1; _dy = 0;  break;
+    case MOVE_RIGHT: _dx = 1;  _dy = 0;  break;
+    }
+  }
+
+  void reset(uint16_t x, uint16_t y)
+  {
+    deleteAll();
+    for (uint8_t i = 0; i < SNAKE_SIZE_DEFAULT; i++)
+    {
+      snakeNode_t *psn = add(x - i, y);
+      if (psn != nullptr) draw(psn->x, psn->y);
+    }
+    setDirection(MOVE_RIGHT);
+    _pFoodCount->reset();
+  }
+
+  void begin(cScore *pFoodCount)
+  {
+    _dx = 1;
+    _dy = 0;
+    _timeLastMove = 0;
+    _moveDelay = 100;
+    _run = false;
+    _pFoodCount = pFoodCount;
+    _pFoodCount->reset();
+    _deleted = nullptr;
+  }
+
+  bool move(void)
+  // return true if something was hit
+  { 
+    // if this is the time for a move? 
+    if (_run && millis() - _timeLastMove <= _moveDelay)
+      return(false);
+    _timeLastMove = millis();
+
+    // do the animation
+    snakeNode_t *psn = _tail;
+    bool hitSomething = false;
+
+    // check if we would be colliding with the snake body
+    while (psn != nullptr && !hitSomething)
+    {
+      hitSomething = (psn->x == _head->x + _dx && psn->y == _head->y + _dy);
+      psn = psn->next;
+    }
+    if (hitSomething) PRINTS("\n-! COLLIDE snake");
+
+    if (!hitSomething)
+    {
+      psn = _tail;    // reset back to the start of the data
+
+      // do we need to add one?
+      if (_pFoodCount->score() != 0)
+      {
+        add(_tail->x, _tail->y);  // make a copy of the tail
+        _pFoodCount->decrement();
+      }
+      else    // delete the tail on the display
+        erase(_tail->x, _tail->y);
+
+      while (psn != nullptr)
+      {
+        if (psn->next != nullptr) // main body segment
+        {
+          psn->x = psn->next->x;
+          psn->y = psn->next->y;
+        }
+        else      // the head
+        {
+          psn->x += _dx;
+          psn->y += _dy;
+          // check if this is already used
+          hitSomething = (mp.getPoint(psn->x, psn->y));
+          draw(psn->x, psn->y);
+        }
+        psn = psn->next;
+      }
+
+      if (hitSomething) PRINTS("\n-! COLLIDE not snake");
+    }
+
+    return(hitSomething);
+  }
+};
+
+// A class to encapsulate primitive sound effects
+class cSound
+{
+private:
+  const uint16_t EOD = 0; // End Of Data marker 
+
+  // Sound data - frequency followed by duration in pairs. 
+  // Data ends in End Of Data marker EOD.
+  const uint16_t soundSplash[1] PROGMEM = { EOD };
+  const uint16_t soundHit[3]    PROGMEM = { 1000, 50, EOD };
+  const uint16_t soundBounce[3] PROGMEM = { 500, 50, EOD };
+  const uint16_t soundPoint[3]  PROGMEM = { 150, 150, EOD };
+  const uint16_t soundStart[7]  PROGMEM = { 250, 100, 500, 100, 1000, 100, EOD };
+  const uint16_t soundOver[7]   PROGMEM = { 1000, 100, 500, 100, 250, 100, EOD };
+
+  void playSound(const uint16_t *table)
+    // Play sound table data. Data table must end in EOD marker.
+  {
+    uint8_t idx = 0;
+
+    PRINTS("\nTone Data ");
+    while (table[idx] != EOD)
+    {
+      uint16_t t = table[idx++];
+      uint16_t d = table[idx++];
+
+      PRINTXY("-", t, d);
+      tone(BEEPER_PIN, t);
+      delay(d);
+    }
+    PRINTS("-EOD");
+    noTone(BEEPER_PIN); // be quiet now!
+  }
+
+public:
+  void begin(void)  {}
+  void splash(void) { playSound(soundSplash); }
+  void start(void)  { playSound(soundStart); }
+  void hit(void)    { playSound(soundHit); }
+  void bounce(void) { playSound(soundBounce); }
+  void point(void)  { playSound(soundPoint); }
+  void over(void)   { playSound(soundOver); }
+};
+
+// main objects coordinated by the code logic
+cScore score, food;
+cPill pill;
+cSnake snake;
+cMoveSW moveSW;
+cSound sound;
+
+void setupField(void)
+// Draw the playing field at the start of the game.
+{
+  mp.clear();
+  mp.drawHLine(FIELD_TOP, FIELD_LEFT, FIELD_RIGHT);
+  mp.drawHLine(FIELD_BOTTOM, FIELD_LEFT, FIELD_RIGHT);
+  mp.drawVLine(FIELD_LEFT, 0, FIELD_TOP);
+  mp.drawVLine(FIELD_RIGHT, 0, FIELD_TOP);
+  score.draw();
+  food.draw();
+}
+
+// Random seed creation --------------------------
+// Adapted from http://www.utopiamechanicus.com/article/arduino-better-random-numbers/
+
+uint16_t bitOut(uint8_t port)
+{
+  static bool firstTime = true;
+  uint32_t prev = 0;
+  uint32_t bit1 = 0, bit0 = 0;
+  uint32_t x = 0, limit = 99;
+
+  if (firstTime)
+  {
+    firstTime = false;
+    prev = analogRead(port);
+  }
+
+  while (limit--)
+  {
+    x = analogRead(port);
+    bit1 = (prev != x ? 1 : 0);
+    prev = x;
+    x = analogRead(port);
+    bit0 = (prev != x ? 1 : 0);
+    prev = x;
+    if (bit1 != bit0)
+      break;
+  }
+
+  return(bit1);
+}
+
+uint32_t seedOut(uint16_t noOfBits, uint8_t port)
+{
+  // return value with 'noOfBits' random bits set
+  uint32_t seed = 0;
+
+  for (int i = 0; i<noOfBits; ++i)
+    seed = (seed << 1) | bitOut(port);
+  
+  return(seed);
+}
+//------------------------------------------------------------------------------
+
+void setup()
+{
+#if  DEBUG
+  Serial.begin(57600);
+#endif
+  PRINTS("\n[MD_MAXPanel_Snake]");
+
+  mp.begin();
+  mp.setFont(_Fixed_5x3);
+  mp.setIntensity(4);
+
+  randomSeed(seedOut(31, RANDOM_SEED_PORT));
+
+  // one time initialization
+  FIELD_TOP = mp.getYMax() - mp.getFontHeight() - 2;
+  FIELD_RIGHT = mp.getXMax();
+  pill.begin(FIELD_LEFT + 1, FIELD_BOTTOM + 1, FIELD_RIGHT - 1, FIELD_TOP - 1);
+  food.begin(FIELD_LEFT + 1, FIELD_TOP + 1 + mp.getFontHeight(), MAX_FOOD);
+
+  score.limit(MAX_SCORE);   // set the width so we can use it below
+  score.begin(FIELD_RIGHT - ((score.width() * (FONT_NUM_WIDTH) + mp.getCharSpacing())) - mp.getCharSpacing(), FIELD_TOP + 1 + mp.getFontHeight(), MAX_SCORE);
+
+  moveSW.begin(LEFT_PIN, RIGHT_PIN, UP_PIN, DOWN_PIN);
+  snake.begin(&food);
+}
+
+bool doSwitches(void)
+{
+  bool b = true;
+
+  switch (moveSW.move())
+  {
+  case cMoveSW::MOVE_UP:    snake.setDirection(cSnake::MOVE_UP);    break;
+  case cMoveSW::MOVE_DOWN:  snake.setDirection(cSnake::MOVE_DOWN);  break;
+  case cMoveSW::MOVE_LEFT:  snake.setDirection(cSnake::MOVE_LEFT);  break;
+  case cMoveSW::MOVE_RIGHT: snake.setDirection(cSnake::MOVE_RIGHT); break;
+  case cMoveSW::MOVE_NONE:  b = false; break;
+  }
+
+  return(b);
+}
+
+void loop(void)
+{
+  static enum { S_SPLASH, S_INIT, S_WAIT_START, S_POINT_PLAY, S_GAME_OVER } runState = S_SPLASH;
+
+  switch (runState)
+  {
+  case S_SPLASH:    // show splash screen at start
+    PRINTSTATE("SPLASH");
+    {
+      const uint16_t border = 2;
+
+      mp.clear();
+      mp.drawRectangle(border, border, mp.getXMax() - border, mp.getYMax() - border);
+      mp.drawLine(0, 0, border, border);
+      mp.drawLine(0, mp.getYMax(), border, mp.getYMax()-border);
+      mp.drawLine(mp.getXMax(), 0, mp.getXMax()-border, border);
+      mp.drawLine(mp.getXMax(), mp.getYMax(), mp.getXMax()-border, mp.getYMax()-border);
+      mp.drawText((mp.getXMax() - mp.getTextWidth(TITLE_TEXT)) / 2, (mp.getYMax() + mp.getFontHeight())/2 , TITLE_TEXT); 
+      sound.splash();
+      delay(SPLASH_DELAY);
+
+      runState = S_INIT;
+    }
+    break;
+
+  case S_INIT:  // initialize for a new game
+    PRINTSTATE("INIT");
+    score.reset();
+    food.reset();
+    setupField();
+    snake.reset((FIELD_RIGHT - FIELD_LEFT) / 2, (FIELD_TOP - FIELD_BOTTOM) / 2);
+    pill.reset();
+
+    runState = S_WAIT_START;
+    PRINTSTATE("WAIT_START");
+    break;
+
+  case S_WAIT_START:  // waiting for the start of a new game
+    if (doSwitches())
+    {
+      PRINTS("\n-- Starting Game");
+      sound.start();
+      snake.start();
+      runState = S_POINT_PLAY;
+      PRINTSTATE("POINT_PLAY");
+    }
+    break;
+
+  case S_POINT_PLAY:    // playing a point
+    // handle the switches
+    doSwitches();
+
+    // move snake and check what this means
+    if (snake.move())
+    {
+      if (snake.getHeadX() == pill.getX() && snake.getHeadY() == pill.getY()) // have we hit the pill?
+      {
+        sound.hit();
+        score.increment(pill.getValue());
+        food.increment(pill.getValue());
+        pill.reset();
+      }
+      else    // we have hit the wall or ourselves
+      {
+        snake.stop();
+        runState = S_GAME_OVER;
+      }
+    }
+    break;
+
+  case S_GAME_OVER:
+    PRINTSTATE("GAME_OVER");
+    mp.drawText((mp.getXMax() - mp.getTextWidth(GAME_TEXT)) / 2, FIELD_TOP / 2 + mp.getFontHeight() + 1, GAME_TEXT);
+    mp.drawText((mp.getXMax() - mp.getTextWidth(OVER_TEXT)) / 2, FIELD_TOP / 2 - 1, OVER_TEXT);
+
+    sound.over();
+    delay(GAME_OVER_DELAY);
+    runState = S_INIT;
+    break;
+  }
+}

@@ -1,0 +1,37 @@
+var class_m_d___m_a_x_panel =
+[
+    [ "textRotation_t", "class_m_d___m_a_x_panel.html#a44b689e7e7f309e3b297e0dafe4cc311", [
+      [ "ROT_0", "class_m_d___m_a_x_panel.html#a44b689e7e7f309e3b297e0dafe4cc311a6ce5cb2b6014e2525b396f45e51791ea", null ],
+      [ "ROT_90", "class_m_d___m_a_x_panel.html#a44b689e7e7f309e3b297e0dafe4cc311afda269f0bcf5f8d2e3e8b7aced7fa09c", null ],
+      [ "ROT_180", "class_m_d___m_a_x_panel.html#a44b689e7e7f309e3b297e0dafe4cc311aee3e54c0c61b1fd65d7cc46b728b2c0e", null ],
+      [ "ROT_270", "class_m_d___m_a_x_panel.html#a44b689e7e7f309e3b297e0dafe4cc311a3eff7250360976360be075a50df3b2ce", null ]
+    ] ],
+    [ "MD_MAXPanel", "class_m_d___m_a_x_panel.html#a3bfe31b3fb621aec310fe597dec44982", null ],
+    [ "MD_MAXPanel", "class_m_d___m_a_x_panel.html#a0a2b7f939a44bd78e9e3e6ee981d14ba", null ],
+    [ "MD_MAXPanel", "class_m_d___m_a_x_panel.html#a9db6b15004a584664a154ce795dbb606", null ],
+    [ "~MD_MAXPanel", "class_m_d___m_a_x_panel.html#a3451a0cfb5dea445e1989c737a29f1ec", null ],
+    [ "begin", "class_m_d___m_a_x_panel.html#a94f9d07106a260a5dd37649c3c0da8f1", null ],
+    [ "clear", "class_m_d___m_a_x_panel.html#a052fa07a510eb92b6ffa3605f75a7dfd", null ],
+    [ "clear", "class_m_d___m_a_x_panel.html#a6a3712f9deb90d886be12bb1bc9e66f4", null ],
+    [ "drawCircle", "class_m_d___m_a_x_panel.html#ad8fe47bce046f97b03afe0200a08f50c", null ],
+    [ "drawHLine", "class_m_d___m_a_x_panel.html#ad22c9e86b06f0a06f7eaa4b98e5d0054", null ],
+    [ "drawLine", "class_m_d___m_a_x_panel.html#a0f4f04fd3df70cbb3101ea86e949c1b2", null ],
+    [ "drawQuadrilateral", "class_m_d___m_a_x_panel.html#abc926140c266950e3f630ba56ba7912d", null ],
+    [ "drawRectangle", "class_m_d___m_a_x_panel.html#a04e125626473f6d6c85301bd46814c13", null ],
+    [ "drawText", "class_m_d___m_a_x_panel.html#a4a73c0619b3291dcbe679d3afe9dc43a", null ],
+    [ "drawTriangle", "class_m_d___m_a_x_panel.html#a1b16343397fa900b86c62e0394a704ac", null ],
+    [ "drawVLine", "class_m_d___m_a_x_panel.html#ad84af77c2070832bdc4f64189ebb762f", null ],
+    [ "getCharSpacing", "class_m_d___m_a_x_panel.html#a2f9de9874f1b4033d9be5145ef298ba2", null ],
+    [ "getFontHeight", "class_m_d___m_a_x_panel.html#a21b7b9c7328b3a0969cc9bade6877574", null ],
+    [ "getGraphicObject", "class_m_d___m_a_x_panel.html#ae899a4a7851b017261c7d44aae39a74a", null ],
+    [ "getPoint", "class_m_d___m_a_x_panel.html#a399ba66032092d6f64c2514933f8560b", null ],
+    [ "getTextWidth", "class_m_d___m_a_x_panel.html#ad08d1ad2f515faf53ff770aa4386d06c", null ],
+    [ "getXMax", "class_m_d___m_a_x_panel.html#a34e9ac92b8beb91335f59d304b1979d6", null ],
+    [ "getYMax", "class_m_d___m_a_x_panel.html#adbc851ebf039c529e4cf1e751503e418", null ],
+    [ "setCharSpacing", "class_m_d___m_a_x_panel.html#a8fb6a1bf4c645df087f5b4c6a940bc74", null ],
+    [ "setFont", "class_m_d___m_a_x_panel.html#a12b95dbcade6a852fbaaa2b47d5e1da4", null ],
+    [ "setIntensity", "class_m_d___m_a_x_panel.html#a3e1d15c8e90d3a9bbd65fdadcad347b0", null ],
+    [ "setPoint", "class_m_d___m_a_x_panel.html#ad7047c3aad849e77af5f74fc31b6fc59", null ],
+    [ "update", "class_m_d___m_a_x_panel.html#abcaac4635c9e377c7fe57d072589e752", null ],
+    [ "update", "class_m_d___m_a_x_panel.html#a592a252dfe9db3488b98737bfb959a91", null ]
+];
