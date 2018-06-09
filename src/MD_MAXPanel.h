@@ -121,13 +121,14 @@ public:
    * connect the software to the hardware. Multiple instances may co-exist
    * but they should not share the same hardware CS pin (SPI interface).
    *
+   * \param mod      the hardware module being used, one of the MD_MAX72XX::moduleType_t values
    * \param dataPin  output on the Arduino where data gets shifted out.
    * \param clkPin   output for the clock signal.
    * \param csPin    output for selecting the device.
    * \param xDevices number of LED matrix modules for the width of the panel.
    * \param yDevices number of LED matrix modules for the height of the panel.
    */
-  MD_MAXPanel(uint8_t dataPin, uint8_t clkPin, uint8_t csPin, uint8_t xDevices, uint8_t yDevices);
+  MD_MAXPanel(MD_MAX72XX::moduleType_t mod, uint8_t dataPin, uint8_t clkPin, uint8_t csPin, uint8_t xDevices, uint8_t yDevices);
 
   /**
    * Class Constructor - SPI hardware interface.
@@ -138,11 +139,12 @@ public:
    * The dataPin and the clockPin are defined by the Arduino hardware definition
    * (SPI MOSI and SCK signals).
    *
+   * \param mod      the hardware module being used, one of the MD_MAX72XX::moduleType_t values
    * \param csPin    output for selecting the device.
    * \param xDevices number of LED matrix modules for the width of the panel.
    * \param yDevices number of LED matrix modules for the height of the panel.
    */
-  MD_MAXPanel(uint8_t csPin, uint8_t xDevices, uint8_t yDevices);
+  MD_MAXPanel(MD_MAX72XX::moduleType_t mod, uint8_t csPin, uint8_t xDevices, uint8_t yDevices);
 
   /**
   * Class Constructor - Existing MD_MAX72XX object.

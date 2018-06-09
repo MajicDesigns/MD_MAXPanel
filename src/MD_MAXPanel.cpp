@@ -30,17 +30,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  * \brief Implements class definition and graphics methods
  */
 
-MD_MAXPanel::MD_MAXPanel(uint8_t dataPin, uint8_t clkPin, uint8_t csPin, uint8_t xDevices, uint8_t yDevices):
+MD_MAXPanel::MD_MAXPanel(MD_MAX72XX::moduleType_t mod, uint8_t dataPin, uint8_t clkPin, uint8_t csPin, uint8_t xDevices, uint8_t yDevices):
 _xDevices(xDevices), _yDevices(yDevices)
 {
-  _D = new MD_MAX72XX(dataPin, clkPin, csPin, xDevices*yDevices);
+  _D = new MD_MAX72XX(mod, dataPin, clkPin, csPin, xDevices*yDevices);
   _killOnDestruct = true;
 }
 
-MD_MAXPanel::MD_MAXPanel(uint8_t csPin, uint8_t xDevices, uint8_t yDevices) :
+MD_MAXPanel::MD_MAXPanel(MD_MAX72XX::moduleType_t mod, uint8_t csPin, uint8_t xDevices, uint8_t yDevices) :
 _xDevices(xDevices), _yDevices(yDevices)
 {
-  _D = new MD_MAX72XX(csPin, xDevices*yDevices);
+  _D = new MD_MAX72XX(mod, csPin, xDevices*yDevices);
   _killOnDestruct = true;
 }
 

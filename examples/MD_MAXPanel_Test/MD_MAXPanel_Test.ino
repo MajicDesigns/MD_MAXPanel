@@ -2,10 +2,9 @@
 //
 // Uses most of the functions in the library
 //
-// NOTE: MD_MAX72xx library must be installed and configured for the LED
-// matrix type being used. Refer documentation included in the MD_MAX72xx
-// library or see this link:
-// https://majicdesigns.github.io/MD_MAX72XX/page_hardware.html
+// Libraries used
+// ==============
+// MD_MAX72XX available from https://github.com/MajicDesigns/MD_MAX72XX
 //
 
 #include <MD_MAXPanel.h>
@@ -29,6 +28,7 @@
 // Define the number of devices we have in the chain and the hardware interface
 // NOTE: These pin numbers will probably not work with your hardware and may
 // need to be adapted
+const MD_MAX72XX::moduleType_t HARDWARE_TYPE = MD_MAX72XX::FC16_HW;
 const uint8_t X_DEVICES = 4;
 const uint8_t Y_DEVICES = 5;
 
@@ -37,9 +37,9 @@ const uint8_t DATA_PIN = 11;  // or MOSI
 const uint8_t CS_PIN = 10;    // or SS
 
 // SPI hardware interface
-MD_MAXPanel mp = MD_MAXPanel(CS_PIN, X_DEVICES, Y_DEVICES);
+MD_MAXPanel mp = MD_MAXPanel(HARDWARE_TYPE, CS_PIN, X_DEVICES, Y_DEVICES);
 // Arbitrary pins
-// MD_MAXPanel mx = MD_MAXPanel(DATA_PIN, CLK_PIN, CS_PIN, X_DEVICES, Y_DEVICES);
+// MD_MAXPanel mx = MD_MAXPanel(HARDWARE_TYPE, DATA_PIN, CLK_PIN, CS_PIN, X_DEVICES, Y_DEVICES);
 
 // We always wait a bit between updates of the display
 #define  DELAYTIME  100  // in milliseconds

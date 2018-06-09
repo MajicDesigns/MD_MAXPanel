@@ -6,15 +6,10 @@
 // SWITCH_ACCEPT - switch moves from one selection to another,INPUT_PULLUP
 // SWITCH_SELECT - accepts the current selection, INPUT_PULLUP
 //
-// IMPORTANT
-// =========
-// MD_MAX72xx library must be installed and configured for the LED
-// matrix type being used. Refer documentation included in the MD_MAX72xx
-// library or see this link:
-// https://majicdesigns.github.io/MD_MAX72XX/page_hardware.html
-//
-// The TTT libraries used in this example are found at 
-// https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/Home
+// Libraries used
+// ==============
+// MD_MAX72XX available from https://github.com/MajicDesigns/MD_MAX72XX
+// MD_TTT available from https://github.com/MajicDesigns/MD_TTT
 //
 // Rules of the Game
 // =================
@@ -23,6 +18,7 @@
 // the spaces in a 3×3 grid. The player who succeeds in placing three 
 // of their marks in a horizontal, vertical, or diagonal row wins the 
 // game. This version has the computer as one of the players.
+//
 
 #include <MD_TTT.h>
 #include <MD_MAXPanel.h>
@@ -58,6 +54,7 @@ void tttCallback(uint8_t position, int8_t player);
 // Define the number of devices in the chain and the SPI hardware interface
 // NOTE: These pin numbers will probably not work with your hardware and may
 // need to be adapted
+const MD_MAX72XX::moduleType_t HARDWARE_TYPE = MD_MAX72XX::FC16_HW;
 const uint8_t X_DEVICES = 4;
 const uint8_t Y_DEVICES = 5;
 
@@ -81,8 +78,8 @@ swState_t swSelect = { SWITCH_SELECT, false, 0 };
 
 // Main objects used defined here
 MD_TTT TTT(tttCallback);
-MD_MAXPanel mp = MD_MAXPanel(CS_PIN, X_DEVICES, Y_DEVICES); // SPI hardware interface
-// MD_MAXPanel mx = MD_MAXPanel(DATA_PIN, CLK_PIN, CS_PIN, X_DEVICES, Y_DEVICES); // Arbitrary pins
+MD_MAXPanel mp = MD_MAXPanel(HARDWARE_TYPE, CS_PIN, X_DEVICES, Y_DEVICES); // SPI hardware interface
+// MD_MAXPanel mx = MD_MAXPanel(HARDWARE_TYPE, DATA_PIN, CLK_PIN, CS_PIN, X_DEVICES, Y_DEVICES); // Arbitrary pins
 
 int8_t  curPlayer = TTT_P2;
 bool  inGamePlay = false;
