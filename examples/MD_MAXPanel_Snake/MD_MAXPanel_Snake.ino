@@ -2,11 +2,7 @@
 //
 // Hardware used
 // =============
-// If 
-//  USE_GAMEPAD - see MD_Gamepad.h
-// else
 //  LEFT_PIN, RIGHT_PIN, UP_PIN, DOWN_PIN - moves switches, INPUT_PULLUP
-//
 // BEEPER_PIN - piezo speaker
 // CLK_PIN, DATA_PIN, CS_PIN - LED matrix display connections
 //
@@ -29,11 +25,6 @@
 // Turn on debug statements to the serial output
 #define  DEBUG  1
 
-#define USE_GAMEPAD 0
-#if USE_GAMEPAD
-#include <MD_Gamepad.h>
-#endif
-
 #if  DEBUG
 #define PRINT(s, x)    { Serial.print(F(s)); Serial.print(x); }
 #define PRINTS(x)      { Serial.print(F(x)); }
@@ -53,12 +44,10 @@
 // Hardware pin definitions. 
 // All momentary on switches are initialized PULLUP
 const uint8_t BEEPER_PIN = 9;
-#if !USE_GAMEPAD
-const uint8_t LEFT_PIN = 2;
+const uint8_t LEFT_PIN = 5;
 const uint8_t RIGHT_PIN = 3;
-const uint8_t UP_PIN = 4;
-const uint8_t DOWN_PIN = 5;
-#endif
+const uint8_t UP_PIN = 2;
+const uint8_t DOWN_PIN = 4;
 
 // Define the number of devices in the chain and the SPI hardware interface
 // NOTE: These pin numbers will probably not work with your hardware and may
@@ -97,36 +86,6 @@ const uint16_t MAX_FOOD = 99;
 
 // A class to encapsulate the snake direction switches
 // Can move up, down, left, right
-#if USE_GAMEPAD
-
-class cMoveSW
-{
-public:
-  enum moveType_t { MOVE_NONE, MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT };
-
-  void begin()
-  {
-    gamepad.begin();
-  }
-
-  bool anyKey(void) { return (gamepad.anyKey()); }
-
-  moveType_t move(void)
-  {
-    switch (gamepad.getSwitch())
-    {
-    case MD_Gamepad::SW_D: return(MOVE_LEFT);
-    case MD_Gamepad::SW_B: return(MOVE_RIGHT);
-    case MD_Gamepad::SW_A: return(MOVE_UP);
-    case MD_Gamepad::SW_C: return(MOVE_DOWN);
-    }
-
-    return(MOVE_NONE);
-  }
-};
-
-#else
-
 class cMoveSW
 {
 private:
@@ -166,7 +125,6 @@ public:
     return(MOVE_NONE);
   }
 };
-#endif
 
 // A class to encapsulate the food pill
 class cPill
@@ -438,11 +396,7 @@ void setup()
   score.limit(MAX_SCORE);   // set the width so we can use it below
   score.begin(&mp, FIELD_RIGHT - ((score.width() * (FONT_NUM_WIDTH) + mp.getCharSpacing())) - mp.getCharSpacing(), FIELD_TOP + 1 + mp.getFontHeight(), MAX_SCORE);
 
-#if USE_GAMEPAD
-  moveSW.begin();
-#else
   moveSW.begin(LEFT_PIN, RIGHT_PIN, UP_PIN, DOWN_PIN);
-#endif
   snake.begin(&food);
 }
 

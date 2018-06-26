@@ -13,11 +13,11 @@ private:
   uint16_t _limit;    // maximum value allowed
 
 public:
-  void begin(MD_MAXPanel *mp, uint16_t x, uint16_t y, uint16_t maxScore) { _x = x, _y = y; limit(maxScore); reset(); }
+  void begin(MD_MAXPanel *mp, uint16_t x, uint16_t y, uint16_t maxScore) { _mp = mp;  _x = x, _y = y; limit(maxScore); reset(); }
   void reset(void)       { erase(); _score = 0; draw(); }
   void set(uint16_t s)   { if (s <= _limit) { erase(); _score = s; draw(); } }
   void increment(uint16_t inc = 1) { if (_score + inc <= _limit) { erase(); _score += inc; draw(); } }
-  void decrement(uint16_t dec = 1) { if (_score - dec >= 0) { erase(); _score -= dec; draw(); } }
+  void decrement(uint16_t dec = 1) { if (_score >= dec) { erase(); _score -= dec; draw(); } }
   uint16_t score(void)   { return(_score); }
   void erase(void)       { draw(false); }
   uint16_t width(void)   { return(_width); }

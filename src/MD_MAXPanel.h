@@ -71,7 +71,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 \page pageRevisionHistory Revision History
 Revision History
 ----------------
-June 2018 version 1.0.0
+Jun 2018 version 1.0.1
+- Extracted common elements of examples in .h file
+
+Jun 2018 version 1.0.0
 - First Release
 
 \page pageSoftware Software Library

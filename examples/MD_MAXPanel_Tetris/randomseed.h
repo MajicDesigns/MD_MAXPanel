@@ -2,7 +2,7 @@
 // Random seed creation --------------------------
 // Adapted from http://www.utopiamechanicus.com/article/arduino-better-random-numbers/
 
-const uint8_t RANDOM_SEED_PORT = A0;    // port read for random seed
+const uint8_t RANDOM_SEED_PORT = A3;    // port read for random seed
 
 uint16_t bitOut(uint8_t port)
 {

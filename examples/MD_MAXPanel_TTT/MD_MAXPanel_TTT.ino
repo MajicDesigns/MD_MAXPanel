@@ -48,7 +48,7 @@
 void tttCallback(uint8_t position, int8_t player);
 
 // User switches for gameplay
-#define SWITCH_SELECT 4 // pin for the switch that moves from one selection to another
+#define SWITCH_SELECT 3 // pin for the switch that moves from one selection to another
 #define SWITCH_ACCEPT 5 // pin for the switch that accepts the current selection
 
 // Define the number of devices in the chain and the SPI hardware interface

@@ -56,11 +56,11 @@
 
 // Hardware pin definitions. 
 // All momentary on switches are initialized PULLUP
-const uint8_t BEEPER_PIN = 3;
-const uint8_t LEFT_PIN = 4;
-const uint8_t RIGHT_PIN = 5;
-const uint8_t ROTATE_PIN = 6;
-const uint8_t DROP_PIN = 7;
+const uint8_t BEEPER_PIN = 9;
+const uint8_t LEFT_PIN = 5;
+const uint8_t RIGHT_PIN = 3;
+const uint8_t ROTATE_PIN = 2;
+const uint8_t DROP_PIN = 4;
 
 // Define the number of devices in the chain and the SPI hardware interface
 // NOTE: These pin numbers will probably not work with your hardware and may
