@@ -2,10 +2,11 @@
 //
 // Hardware used
 // =============
-// LEFT_PIN   - move left switch, INPUT_PULLUP
-// RIGHT_PIN  - move right switch, INPUT_PULLUP
-// UP_PIN     - move up switch, INPUT_PULLUP
-// DOWN_PIN   - move down switch, INPUT_PULLUP
+// If 
+//  USE_GAMEPAD - see MD_Gamepad.h
+// else
+//  LEFT_PIN, RIGHT_PIN, UP_PIN, DOWN_PIN - moves switches, INPUT_PULLUP
+//
 // BEEPER_PIN - piezo speaker
 // CLK_PIN, DATA_PIN, CS_PIN - LED matrix display connections
 //
@@ -21,9 +22,17 @@
 
 #include <MD_MAXPanel.h>
 #include "Font5x3.h"
+#include "score.h"
+#include "sound.h"
+#include "randomseed.h"
 
 // Turn on debug statements to the serial output
-#define  DEBUG  0
+#define  DEBUG  1
+
+#define USE_GAMEPAD 0
+#if USE_GAMEPAD
+#include <MD_Gamepad.h>
+#endif
 
 #if  DEBUG
 #define PRINT(s, x)    { Serial.print(F(s)); Serial.print(x); }
@@ -43,11 +52,13 @@
 
 // Hardware pin definitions. 
 // All momentary on switches are initialized PULLUP
-const uint8_t BEEPER_PIN = 3;
-const uint8_t LEFT_PIN = 4;
-const uint8_t RIGHT_PIN = 5;
-const uint8_t UP_PIN = 6;
-const uint8_t DOWN_PIN = 7;
+const uint8_t BEEPER_PIN = 9;
+#if !USE_GAMEPAD
+const uint8_t LEFT_PIN = 2;
+const uint8_t RIGHT_PIN = 3;
+const uint8_t UP_PIN = 4;
+const uint8_t DOWN_PIN = 5;
+#endif
 
 // Define the number of devices in the chain and the SPI hardware interface
 // NOTE: These pin numbers will probably not work with your hardware and may
@@ -84,10 +95,38 @@ const uint8_t FONT_NUM_WIDTH = 3;
 const uint16_t MAX_SCORE = MAX_LENGTH;
 const uint16_t MAX_FOOD = 99;
 
-const uint8_t RANDOM_SEED_PORT = A0;    // port read for random seed
-
 // A class to encapsulate the snake direction switches
 // Can move up, down, left, right
+#if USE_GAMEPAD
+
+class cMoveSW
+{
+public:
+  enum moveType_t { MOVE_NONE, MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT };
+
+  void begin()
+  {
+    gamepad.begin();
+  }
+
+  bool anyKey(void) { return (gamepad.anyKey()); }
+
+  moveType_t move(void)
+  {
+    switch (gamepad.getSwitch())
+    {
+    case MD_Gamepad::SW_D: return(MOVE_LEFT);
+    case MD_Gamepad::SW_B: return(MOVE_RIGHT);
+    case MD_Gamepad::SW_A: return(MOVE_UP);
+    case MD_Gamepad::SW_C: return(MOVE_DOWN);
+    }
+
+    return(MOVE_NONE);
+  }
+};
+
+#else
+
 class cMoveSW
 {
 private:
@@ -95,8 +134,6 @@ private:
   uint8_t  _pinRight;
   uint8_t  _pinUp;
   uint8_t  _pinDown;
-  uint16_t _batDelay;   // the delay between switch detection
-  uint32_t _timeLastMove; // the millis() value for the last time we checked
 
 public:
   enum moveType_t { MOVE_NONE, MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT };
@@ -129,55 +166,7 @@ public:
     return(MOVE_NONE);
   }
 };
-
-// A class to encapsulate the score display
-class cScore
-{
-private:
-  int16_t _score;    // the score
-  uint16_t _x, _y;    // coordinate of top left for display
-  uint8_t _width;     // number of digits wide
-  uint16_t _limit;    // maximum value allowed
-
-public:
-  void begin(uint16_t x, uint16_t y, uint16_t maxScore) { _x = x, _y = y; limit(maxScore); reset(); }
-  void reset(void)       { erase(); _score = 0; draw(); }
-  void set(uint16_t s)   { if (s <= _limit) { erase(); _score = s; draw(); } }
-  void increment(uint16_t inc = 1) { if (_score + inc <= _limit) { erase(); _score += inc; draw(); } }
-  void decrement(uint16_t dec = 1) { if (_score - dec >= 0) { erase(); _score -= dec; draw(); } }
-  uint16_t score(void)   { return(_score); }
-  void erase(void)       { draw(false); }
-  uint16_t width(void)   { return(_width); }
-
-  void limit(uint16_t m) 
-  { 
-    erase();    // width may change, so delete with the curret parameters
-      
-    _limit = m; 
-    // work out how many digits this is
-    _width = 0;
-    do 
-    {
-      _width++;
-      m /= 10;
-    } while (m != 0);
-  }
-
-  void draw(bool state = true)
-  {
-    char sz[_width + 1];
-    uint16_t s = _score;
-
-    sz[_width] = '\0';
-    for (int i = _width - 1; i >= 0; --i)
-    {
-      sz[i] = (s % 10) + '0';
-      s /= 10;
-    }
-
-    mp.drawText(_x, _y, sz, MD_MAXPanel::ROT_0, state);
-  }
-};
+#endif
 
 // A class to encapsulate the food pill
 class cPill
@@ -407,50 +396,6 @@ public:
   }
 };
 
-// A class to encapsulate primitive sound effects
-class cSound
-{
-private:
-  const uint16_t EOD = 0; // End Of Data marker 
-
-  // Sound data - frequency followed by duration in pairs. 
-  // Data ends in End Of Data marker EOD.
-  const uint16_t soundSplash[1] PROGMEM = { EOD };
-  const uint16_t soundHit[3]    PROGMEM = { 1000, 50, EOD };
-  const uint16_t soundBounce[3] PROGMEM = { 500, 50, EOD };
-  const uint16_t soundPoint[3]  PROGMEM = { 150, 150, EOD };
-  const uint16_t soundStart[7]  PROGMEM = { 250, 100, 500, 100, 1000, 100, EOD };
-  const uint16_t soundOver[7]   PROGMEM = { 1000, 100, 500, 100, 250, 100, EOD };
-
-  void playSound(const uint16_t *table)
-    // Play sound table data. Data table must end in EOD marker.
-  {
-    uint8_t idx = 0;
-
-    PRINTS("\nTone Data ");
-    while (table[idx] != EOD)
-    {
-      uint16_t t = table[idx++];
-      uint16_t d = table[idx++];
-
-      PRINTXY("-", t, d);
-      tone(BEEPER_PIN, t);
-      delay(d);
-    }
-    PRINTS("-EOD");
-    noTone(BEEPER_PIN); // be quiet now!
-  }
-
-public:
-  void begin(void)  {}
-  void splash(void) { playSound(soundSplash); }
-  void start(void)  { playSound(soundStart); }
-  void hit(void)    { playSound(soundHit); }
-  void bounce(void) { playSound(soundBounce); }
-  void point(void)  { playSound(soundPoint); }
-  void over(void)   { playSound(soundOver); }
-};
-
 // main objects coordinated by the code logic
 cScore score, food;
 cPill pill;
@@ -470,49 +415,6 @@ void setupField(void)
   food.draw();
 }
 
-// Random seed creation --------------------------
-// Adapted from http://www.utopiamechanicus.com/article/arduino-better-random-numbers/
-
-uint16_t bitOut(uint8_t port)
-{
-  static bool firstTime = true;
-  uint32_t prev = 0;
-  uint32_t bit1 = 0, bit0 = 0;
-  uint32_t x = 0, limit = 99;
-
-  if (firstTime)
-  {
-    firstTime = false;
-    prev = analogRead(port);
-  }
-
-  while (limit--)
-  {
-    x = analogRead(port);
-    bit1 = (prev != x ? 1 : 0);
-    prev = x;
-    x = analogRead(port);
-    bit0 = (prev != x ? 1 : 0);
-    prev = x;
-    if (bit1 != bit0)
-      break;
-  }
-
-  return(bit1);
-}
-
-uint32_t seedOut(uint16_t noOfBits, uint8_t port)
-{
-  // return value with 'noOfBits' random bits set
-  uint32_t seed = 0;
-
-  for (int i = 0; i<noOfBits; ++i)
-    seed = (seed << 1) | bitOut(port);
-  
-  return(seed);
-}
-//------------------------------------------------------------------------------
-
 void setup()
 {
 #if  DEBUG
@@ -530,12 +432,17 @@ void setup()
   FIELD_TOP = mp.getYMax() - mp.getFontHeight() - 2;
   FIELD_RIGHT = mp.getXMax();
   pill.begin(FIELD_LEFT + 1, FIELD_BOTTOM + 1, FIELD_RIGHT - 1, FIELD_TOP - 1);
-  food.begin(FIELD_LEFT + 1, FIELD_TOP + 1 + mp.getFontHeight(), MAX_FOOD);
+  food.begin(&mp, FIELD_LEFT + 1, FIELD_TOP + 1 + mp.getFontHeight(), MAX_FOOD);
 
+  sound.begin(BEEPER_PIN);
   score.limit(MAX_SCORE);   // set the width so we can use it below
-  score.begin(FIELD_RIGHT - ((score.width() * (FONT_NUM_WIDTH) + mp.getCharSpacing())) - mp.getCharSpacing(), FIELD_TOP + 1 + mp.getFontHeight(), MAX_SCORE);
+  score.begin(&mp, FIELD_RIGHT - ((score.width() * (FONT_NUM_WIDTH) + mp.getCharSpacing())) - mp.getCharSpacing(), FIELD_TOP + 1 + mp.getFontHeight(), MAX_SCORE);
 
+#if USE_GAMEPAD
+  moveSW.begin();
+#else
   moveSW.begin(LEFT_PIN, RIGHT_PIN, UP_PIN, DOWN_PIN);
+#endif
   snake.begin(&food);
 }
 

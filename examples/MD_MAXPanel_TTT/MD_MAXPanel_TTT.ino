@@ -174,12 +174,12 @@ uint8_t getMove(void)
 
   switch (promptMode)
   {
-  case UI_START:	// print the message
+  case UI_START:  // print the message
     userMessage("You move");
     promptMode = UI_HILIGHT;
     break;
 
-  case UI_HILIGHT:	// find the first empty cell and highlight it
+  case UI_HILIGHT:  // find the first empty cell and highlight it
     highlightCell(curPosUI, false);     // unhighlight current selection
     for (curPosUI = 0; curPosUI<TTT_BOARD_SIZE; curPosUI++)
     {
@@ -221,7 +221,7 @@ uint8_t getMove(void)
   case UI_ACCEPT: // we have a selection, return the appropriate move
     highlightCell(curPosUI, false);     // unhighlight current selection
     m = curPosUI;
-    promptMode = UI_START;	// set up for next time
+    promptMode = UI_START;  // set up for next time
     break;
 
   default: // catch all - reset

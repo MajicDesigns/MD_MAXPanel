@@ -32,6 +32,7 @@
 //
 
 #include <MD_MAXPanel.h>
+#include "randomseed.h"
 
 // Turn on debug statements to the serial output
 #define  DEBUG  0
@@ -70,8 +71,6 @@ MD_MAXPanel mp = MD_MAXPanel(HARDWARE_TYPE, CS_PIN, X_DEVICES, Y_DEVICES);
 
 // We always wait a bit between updates of the display
 #define  TICK_TIME  150  // in milliseconds
-
-const uint8_t RANDOM_SEED_PORT = A0;    // port read for random seed
 
 void setup(void)
 {
@@ -216,45 +215,3 @@ void nextGeneration(void)
 
   mp.update(true);
 }
-
-// Random seed creation --------------------------
-// Adapted from http://www.utopiamechanicus.com/article/arduino-better-random-numbers/
-uint16_t bitOut(uint8_t port)
-{
-  static bool firstTime = true;
-  uint32_t prev = 0;
-  uint32_t bit1 = 0, bit0 = 0;
-  uint32_t x = 0, limit = 99;
-
-  if (firstTime)
-  {
-    firstTime = false;
-    prev = analogRead(port);
-  }
-
-  while (limit--)
-  {
-    x = analogRead(port);
-    bit1 = (prev != x ? 1 : 0);
-    prev = x;
-    x = analogRead(port);
-    bit0 = (prev != x ? 1 : 0);
-    prev = x;
-    if (bit1 != bit0)
-      break;
-  }
-
-  return(bit1);
-}
-
-uint32_t seedOut(uint16_t noOfBits, uint8_t port)
-{
-  // return value with 'noOfBits' random bits set
-  uint32_t seed = 0;
-
-  for (int i = 0; i<noOfBits; ++i)
-    seed = (seed << 1) | bitOut(port);
-  
-  return(seed);
-}
-//------------------------------------------------------------------------------

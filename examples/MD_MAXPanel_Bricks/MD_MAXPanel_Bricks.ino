@@ -19,6 +19,8 @@
 
 #include <MD_MAXPanel.h>
 #include "Font5x3.h"
+#include "score.h"
+#include "sound.h"
 
 // Turn on debug statements to the serial output
 #define  DEBUG  0
@@ -263,55 +265,6 @@ public:
   }
 };
 
-// A class to encapsulate the score display
-class cScore
-{
-private:
-  int16_t _score;    // the score
-  uint16_t _x, _y;    // coordinate of top left for display
-  uint8_t _width;     // number of digits wide
-  uint16_t _limit;    // maximum value allowed
-
-public:
-  void begin(uint16_t x, uint16_t y, uint16_t maxScore) { _x = x, _y = y; limit(maxScore); reset(); }
-  void reset(void)       { erase(); _score = 0; draw(); }
-  void set(uint16_t s)   { if (s <= _limit) { erase(); _score = s; draw(); } }
-  void increment(uint16_t inc = 1) { if (_score + inc <= _limit) { erase(); _score += inc; draw(); } }
-  void decrement(uint16_t dec = 1) { if (_score - dec >= 0) { erase(); _score -= dec; draw(); } }
-  uint16_t score(void)   { return(_score); }
-  void erase(void)       { draw(false); }
-  uint16_t width(void)   { return(_width); }
-
-  void limit(uint16_t m) 
-  { 
-    erase();    // width may change, so delete with the curret parameters
-      
-    _limit = m; 
-    // work out how many digits this is
-    _width = 0;
-    do 
-    {
-      _width++;
-      m /= 10;
-    } while (m != 0);
-  }
-
-  void draw(bool state = true)
-  {
-    char sz[_width + 1];
-    uint16_t s = _score;
-
-    sz[_width] = '\0';
-    for (int i = _width - 1; i >= 0; --i)
-    {
-      sz[i] = (s % 10) + '0';
-      s /= 10;
-    }
-
-    mp.drawText(_x, _y, sz, MD_MAXPanel::ROT_0, state);
-  }
-};
-
 // A class to encapsulate the entire field of bricks
 // All the bricks are contained in this object.
 class cBrickField
@@ -480,50 +433,6 @@ public:
   }
 };
 
-// A class to encapsulate primitive sound effects
-class cSound
-{
-private:
-  const uint16_t EOD = 0; // End Of Data marker 
-
-  // Sound data - frequency followed by duration in pairs. 
-  // Data ends in End Of Data marker EOD.
-  const uint16_t soundSplash[1] PROGMEM = { EOD };
-  const uint16_t soundHit[3]    PROGMEM = { 1000, 50, EOD };
-  const uint16_t soundBounce[3] PROGMEM = { 500, 50, EOD };
-  const uint16_t soundPoint[3]  PROGMEM = { 150, 150, EOD };
-  const uint16_t soundStart[7]  PROGMEM = { 250, 100, 500, 100, 1000, 100, EOD };
-  const uint16_t soundOver[7]   PROGMEM = { 1000, 100, 500, 100, 250, 100, EOD };
-
-  void playSound(const uint16_t *table)
-    // Play sound table data. Data table must end in EOD marker.
-  {
-    uint8_t idx = 0;
-
-    PRINTS("\nTone Data ");
-    while (table[idx] != EOD)
-    {
-      uint16_t t = table[idx++];
-      uint16_t d = table[idx++];
-
-      PRINTXY("-", t, d);
-      tone(BEEPER_PIN, t);
-      delay(d);
-    }
-    PRINTS("-EOD");
-    noTone(BEEPER_PIN); // be quiet now!
-  }
-
-public:
-  void begin(void)  {}
-  void splash(void) { playSound(soundSplash); }
-  void start(void)  { playSound(soundStart); }
-  void hit(void)    { playSound(soundHit); }
-  void bounce(void) { playSound(soundBounce); }
-  void point(void)  { playSound(soundPoint); }
-  void over(void)   { playSound(soundOver); }
-};
-
 // main objects coordinated by the code logic
 cScore lives, score;
 cBrickBall ball;
@@ -561,10 +470,10 @@ void setup()
 
   bat.begin((FIELD_RIGHT - FIELD_LEFT) / 2, BAT_EDGE_OFFSET, FIELD_LEFT + 1, FIELD_RIGHT - 1, BAT_SIZE_DEFAULT, LEFT_PIN, RIGHT_PIN);
   ball.begin(bat.getX(), bat.getY() + 1, FIELD_LEFT+1, 0, FIELD_RIGHT-1, FIELD_TOP-1);
-  lives.begin(FIELD_LEFT + 1, FIELD_TOP + 1 + mp.getFontHeight(), MAX_LIVES);
+  lives.begin(&mp, FIELD_LEFT + 1, FIELD_TOP + 1 + mp.getFontHeight(), MAX_LIVES);
   score.limit(MAX_SCORE);   // set width() so we can used it below
-  score.begin(FIELD_RIGHT - (score.width() * (FONT_NUM_WIDTH + mp.getCharSpacing())) + mp.getCharSpacing(), FIELD_TOP + 1 + mp.getFontHeight(), MAX_SCORE);
-  sound.begin();
+  score.begin(&mp, FIELD_RIGHT - (score.width() * (FONT_NUM_WIDTH + mp.getCharSpacing())) + mp.getCharSpacing(), FIELD_TOP + 1 + mp.getFontHeight(), MAX_SCORE);
+  sound.begin(BEEPER_PIN);
 }
 
 void loop(void)

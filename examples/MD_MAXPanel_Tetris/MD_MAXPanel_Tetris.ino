@@ -31,6 +31,9 @@
 
 #include <MD_MAXPanel.h>
 #include "Font5x3.h"
+#include "score.h"
+#include "sound.h"
+#include "randomseed.h"
 
 // Turn on debug statements to the serial output
 #define  DEBUG  0
@@ -95,8 +98,6 @@ const uint16_t MAX_SCORE = 60000;
 const uint16_t PIECE_SCORE = 5;
 const uint16_t LINE_SCORE = 20;
 
-const uint8_t RANDOM_SEED_PORT = A0;    // port read for random seed
-
 #define ARRAY_SIZE(a) (sizeof(a)/sizeof(a[0]))
 
 // A class to encapsulate the snake direction switches
@@ -147,102 +148,6 @@ public:
       
     return(MOVE_NONE);
   }
-};
-
-// A class to encapsulate the score display
-class cScore
-{
-private:
-  uint16_t _score;    // the score
-  uint16_t _x, _y;    // coordinate of top left for display
-  uint8_t _width;     // number of digits wide
-  uint16_t _limit;    // maximum value allowed
-
-public:
-  void begin(uint16_t x, uint16_t y, uint16_t maxScore) { _x = x, _y = y; limit(maxScore); reset(); }
-  void reset(void)       { erase(); _score = 0; draw(); }
-  void set(uint16_t s)   { if (s <= _limit) { erase(); _score = s; draw(); } }
-  void increment(uint16_t inc = 1) { if (_score + inc <= _limit) { erase(); _score += inc; draw(); } }
-  void decrement(uint16_t dec = 1) { if (_score - dec >= 0) { erase(); _score -= dec; draw(); } }
-  uint16_t score(void)   { return(_score); }
-  void erase(void)       { draw(false); }
-  uint16_t width(void)   { return(_width); }
-
-  void limit(uint16_t m)
-  {
-    erase();    // width may change, so delete with the curret parameters
-
-    _limit = m;
-    // work out how many digits this is
-    _width = 0;
-    do
-    {
-      _width++;
-      m /= 10;
-    } while (m != 0);
-    PRINT("\nScore width: ", _width);
-  }
-
-  void draw(bool state = true)
-  {
-    char sz[_width + 1];
-    uint16_t s = _score;
-
-    PRINT("\n-- SCORE: ", _score);
-    sz[_width] = '\0';
-    for (int i = _width - 1; i >= 0; --i)
-    {
-      sz[i] = (s % 10) + '0';
-      s /= 10;
-    }
-
-    PRINT(" S:'", sz); PRINTS("'");
-    mp.drawText(_x, _y, sz, MD_MAXPanel::ROT_0, state);
-  }
-};
-
-// A class to encapsulate primitive sound effects
-class cSound
-{
-private:
-  const uint16_t EOD = 0; // End Of Data marker 
-
-  // Sound data - frequency followed by duration in pairs. 
-  // Data ends in End Of Data marker EOD.
-  const uint16_t soundSplash[1] PROGMEM = { EOD };
-  const uint16_t soundHit[3]    PROGMEM = { 1000, 50, EOD };
-  const uint16_t soundBounce[3] PROGMEM = { 500, 50, EOD };
-  const uint16_t soundPoint[3]  PROGMEM = { 150, 150, EOD };
-  const uint16_t soundStart[7]  PROGMEM = { 250, 100, 500, 100, 1000, 100, EOD };
-  const uint16_t soundOver[7]   PROGMEM = { 1000, 100, 500, 100, 250, 100, EOD };
-
-  void playSound(const uint16_t *table)
-    // Play sound table data. Data table must end in EOD marker.
-  {
-    uint8_t idx = 0;
-
-    //PRINTS("\nTone Data ");
-    while (table[idx] != EOD)
-    {
-      uint16_t t = table[idx++];
-      uint16_t d = table[idx++];
-
-      //PRINTXY("-", t, d);
-      tone(BEEPER_PIN, t);
-      delay(d);
-    }
-    //PRINTS("-EOD");
-    noTone(BEEPER_PIN); // be quiet now!
-  }
-
-public:
-  void begin(void)  {}
-  void splash(void) { playSound(soundSplash); }
-  void start(void)  { playSound(soundStart); }
-  void hit(void)    { playSound(soundHit); }
-  void bounce(void) { playSound(soundBounce); }
-  void point(void)  { playSound(soundPoint); }
-  void over(void)   { playSound(soundOver); }
 };
 
 // A class to encapsulate the Tetris field
@@ -319,7 +224,7 @@ private:
   void eraseOmino(uint8_t omino, uint8_t rot, int16_t x, int16_t y) { showOmino(omino, rot, FIELD_LEFT + x + 1, FIELD_TOP - y, false); }
 
   void omino2Field(uint8_t omino, uint8_t rot, int16_t x, int16_t y)
-  // copy the terronimo to the field, leaving the rest untouched
+  // copy the tetronimo to the field, leaving the rest untouched
   {
     for (int8_t j = 0; j < OMINO_SIZE; j++)
     {
@@ -659,49 +564,6 @@ void setupField(void)
   score.draw();
 }
 
-// Random seed creation --------------------------
-// Adapted from http://www.utopiamechanicus.com/article/arduino-better-random-numbers/
-
-uint16_t bitOut(uint8_t port)
-{
-  static bool firstTime = true;
-  uint32_t prev = 0;
-  uint32_t bit1 = 0, bit0 = 0;
-  uint32_t x = 0, limit = 99;
-
-  if (firstTime)
-  {
-    firstTime = false;
-    prev = analogRead(port);
-  }
-
-  while (limit--)
-  {
-    x = analogRead(port);
-    bit1 = (prev != x ? 1 : 0);
-    prev = x;
-    x = analogRead(port);
-    bit0 = (prev != x ? 1 : 0);
-    prev = x;
-    if (bit1 != bit0)
-      break;
-  }
-
-  return(bit1);
-}
-
-uint32_t seedOut(uint16_t noOfBits, uint8_t port)
-{
-  // return value with 'noOfBits' random bits set
-  uint32_t seed = 0;
-
-  for (int i = 0; i<noOfBits; ++i)
-    seed = (seed << 1) | bitOut(port);
-  
-  return(seed);
-}
-//------------------------------------------------------------------------------
-
 void setup()
 {
 #if  DEBUG
@@ -713,8 +575,9 @@ void setup()
   mp.setFont(_Fixed_5x3);
   mp.setIntensity(4);
 
+  sound.begin(BEEPER_PIN);
   score.limit(MAX_SCORE);   // so we can use width() below
-  score.begin(mp.getXMax() - (score.width() * (FONT_NUM_WIDTH + mp.getCharSpacing())) + mp.getCharSpacing(), mp.getYMax() - 1, MAX_SCORE);
+  score.begin(&mp, mp.getXMax() - (score.width() * (FONT_NUM_WIDTH + mp.getCharSpacing())) + mp.getCharSpacing(), mp.getYMax() - 1, MAX_SCORE);
 
   moveSW.begin(LEFT_PIN, RIGHT_PIN, ROTATE_PIN, DROP_PIN);
 
