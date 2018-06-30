@@ -2,7 +2,12 @@
 //
 // Hardware used
 // =============
-//  LEFT_PIN, RIGHT_PIN, UP_PIN, DOWN_PIN - moves switches, INPUT_PULLUP
+// LEFT_PIN   - left move switch, INPUT_PULLUP
+// UP_PIN     - up move switch, INPUT_PULLUP
+// DOWN_PIN   - down move switch, INPUT_PULLUP
+// RIGHT_PIN  - right move switch, INPUT_PULLUP
+// SELECT_PIN - unused
+// ENTER_PIN - unused
 // BEEPER_PIN - piezo speaker
 // CLK_PIN, DATA_PIN, CS_PIN - LED matrix display connections
 //
@@ -43,11 +48,13 @@
 
 // Hardware pin definitions. 
 // All momentary on switches are initialized PULLUP
-const uint8_t BEEPER_PIN = 9;
-const uint8_t LEFT_PIN = 5;
-const uint8_t RIGHT_PIN = 3;
 const uint8_t UP_PIN = 2;
+const uint8_t RIGHT_PIN = 3;
 const uint8_t DOWN_PIN = 4;
+const uint8_t LEFT_PIN = 5;
+const uint8_t SELECT_PIN = 6;
+const uint8_t ENTER_PIN = 7;
+const uint8_t BEEPER_PIN = 9;
 
 // Define the number of devices in the chain and the SPI hardware interface
 // NOTE: These pin numbers will probably not work with your hardware and may
@@ -383,6 +390,7 @@ void setup()
   mp.begin();
   mp.setFont(_Fixed_5x3);
   mp.setIntensity(4);
+  //mp.setRotation(MD_MAXPanel::ROT_90);
 
   randomSeed(seedOut(31, RANDOM_SEED_PORT));
 

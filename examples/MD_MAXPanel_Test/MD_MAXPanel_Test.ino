@@ -59,7 +59,16 @@ void zeroPointSet(void)
     delay(DELAYTIME/mp.getXMax());
   }
 
-  delay(DELAYTIME*3);
+  delay(DELAYTIME*6);
+}
+
+void showUp(void)
+// Triangle pointing to the of the display as currently rotated
+{
+  PRINTS("\nTop of display");
+  mp.clear();
+  mp.drawTriangle(0, mp.getYMax() / 2, (mp.getXMax() + 1) / 2, mp.getYMax(), mp.getXMax(), mp.getYMax() / 2, true);
+  delay(DELAYTIME * 10);
 }
 
 void brightness(void)
@@ -335,6 +344,7 @@ void setup(void)
 void loop(void)
 {
   zeroPointSet();
+  showUp();
   brightness();
   lines();
   hLines();
@@ -346,5 +356,8 @@ void loop(void)
   triangles();
   text(_Fixed_5x3);
   text(nullptr);
+
+  // rotate the display and do it all again
+  mp.setRotation(mp.getRotation() == MD_MAXPanel::ROT_0 ? MD_MAXPanel::ROT_90 : MD_MAXPanel::ROT_0);
 }
 

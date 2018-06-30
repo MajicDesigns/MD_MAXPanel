@@ -6,8 +6,10 @@
 //
 // LEFT_PIN   - move left switch, INPUT_PULLUP
 // RIGHT_PIN  - move right switch, INPUT_PULLUP
-// ROTATE_PIN - rotate the piece switch, INPUT_PULLUP
-// DROP_PIN   - drop the piece switch, INPUT_PULLUP
+// UP_PIN     - unused
+// DOWN_PIN   - drop the piece switch, INPUT_PULLUP
+// SELECT_PIN - rotate the piece switch, INPUT_PULLUP
+// ENTER_PIN - unused
 // BEEPER_PIN - piezo speaker
 // CLK_PIN, DATA_PIN, CS_PIN - LED matrix display connections
 //
@@ -56,11 +58,13 @@
 
 // Hardware pin definitions. 
 // All momentary on switches are initialized PULLUP
-const uint8_t BEEPER_PIN = 9;
-const uint8_t LEFT_PIN = 5;
+const uint8_t UP_PIN = 2;
 const uint8_t RIGHT_PIN = 3;
-const uint8_t ROTATE_PIN = 2;
-const uint8_t DROP_PIN = 4;
+const uint8_t DOWN_PIN = 4;
+const uint8_t LEFT_PIN = 5;
+const uint8_t SELECT_PIN = 6;
+const uint8_t ENTER_PIN = 7;
+const uint8_t BEEPER_PIN = 9;
 
 // Define the number of devices in the chain and the SPI hardware interface
 // NOTE: These pin numbers will probably not work with your hardware and may
@@ -574,12 +578,13 @@ void setup()
   mp.begin();
   mp.setFont(_Fixed_5x3);
   mp.setIntensity(4);
+  // mp.setRotation(MD_MAXPanel::ROT_90);
 
   sound.begin(BEEPER_PIN);
   score.limit(MAX_SCORE);   // so we can use width() below
   score.begin(&mp, mp.getXMax() - (score.width() * (FONT_NUM_WIDTH + mp.getCharSpacing())) + mp.getCharSpacing(), mp.getYMax() - 1, MAX_SCORE);
 
-  moveSW.begin(LEFT_PIN, RIGHT_PIN, ROTATE_PIN, DROP_PIN);
+  moveSW.begin(LEFT_PIN, RIGHT_PIN, SELECT_PIN, DOWN_PIN);
 
   randomSeed(seedOut(31, RANDOM_SEED_PORT));
 }

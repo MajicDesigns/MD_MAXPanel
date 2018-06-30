@@ -4,7 +4,10 @@
 // =============
 // LEFT_PIN   - bat left switch, INPUT_PULLUP
 // RIGHT_PIN  - bat right switch, INPUT_PULLUP
-// SHOOT_PIN  - shooting bullets switch, INPUT_PULLUP
+// UP_PIN     - unused
+// DOWN_PIN   - unused
+// SELECT_PIN - shooting bullets switch, INPUT_PULLUP
+// ENTER_PIN  - unused
 // BEEPER_PIN - piezo speaker
 // CLK_PIN, DATA_PIN, CS_PIN - LED matrix display connections
 //
@@ -16,7 +19,7 @@
 // =================
 // The player controls a spaceship in an meteor field. The object of the 
 // game is to shoot and destroy meteors while not colliding with any meteor
-// fragments. Meteors start as a large size and become smaller and moves 
+// fragments. Meteors start as a large size and become smaller and move 
 // faster as they fragment when they are hit. Smaller, faster meteors 
 // score more points that large slow ones. The game ends when a meteor 
 // hits the spaceship, destroying it.
@@ -48,10 +51,13 @@
 
 // Hardware pin definitions. 
 // All momentary on switches are initialized PULLUP
-const uint8_t BEEPER_PIN = 9;
-const uint8_t LEFT_PIN = 5;
+const uint8_t UP_PIN = 2;
 const uint8_t RIGHT_PIN = 3;
-const uint8_t SHOOT_PIN = 4;
+const uint8_t DOWN_PIN = 4;
+const uint8_t LEFT_PIN = 5;
+const uint8_t SELECT_PIN = 6;
+const uint8_t ENTER_PIN = 7;
+const uint8_t BEEPER_PIN = 9;
 
 // Define the number of devices in the chain and the SPI hardware interface
 // NOTE: These pin numbers will probably not work with your hardware and may
@@ -688,13 +694,14 @@ void setup()
   mp.begin();
   mp.setFont(_Fixed_5x3);
   mp.setIntensity(4);
+  //mp.setRotation(MD_MAXPanel::ROT_90);
 
   // one time initialization
   FIELD_TOP = mp.getYMax() - mp.getFontHeight() - 2;
   FIELD_RIGHT = mp.getXMax();
 
   gun.begin((FIELD_RIGHT - FIELD_LEFT) / 2, BAT_EDGE_OFFSET, FIELD_LEFT + 1, FIELD_RIGHT - 1, LEFT_PIN, RIGHT_PIN);
-  bullets.begin(1, FIELD_TOP-1, SHOOT_PIN);
+  bullets.begin(1, FIELD_TOP-1, SELECT_PIN);
   score.limit(MAX_SCORE);   // set width() so we can use it below
   score.begin(&mp, FIELD_RIGHT - (score.width() * (FONT_NUM_WIDTH + mp.getCharSpacing())) + mp.getCharSpacing(), FIELD_TOP + 1 + mp.getFontHeight(), MAX_SCORE);
   sound.begin(BEEPER_PIN);

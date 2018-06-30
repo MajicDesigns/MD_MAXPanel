@@ -3,8 +3,14 @@
 //
 // Hardware used
 // =============
-// SWITCH_ACCEPT - switch moves from one selection to another,INPUT_PULLUP
-// SWITCH_SELECT - accepts the current selection, INPUT_PULLUP
+// LEFT_PIN   - unused
+// UP_PIN     - unused
+// DOWN_PIN   - unused
+// RIGHT_PIN  - unused
+// SELECT_PIN - switch moves from one selection to another,INPUT_PULLUP
+// ENTER_PIN  - accepts the current selection, INPUT_PULLUP
+// BEEPER_PIN - piezo speaker
+// CLK_PIN, DATA_PIN, CS_PIN - LED matrix display connections
 //
 // Libraries used
 // ==============
@@ -48,8 +54,13 @@
 void tttCallback(uint8_t position, int8_t player);
 
 // User switches for gameplay
-#define SWITCH_SELECT 3 // pin for the switch that moves from one selection to another
-#define SWITCH_ACCEPT 5 // pin for the switch that accepts the current selection
+const uint8_t UP_PIN = 2;
+const uint8_t RIGHT_PIN = 3;
+const uint8_t DOWN_PIN = 4;
+const uint8_t LEFT_PIN = 5;
+const uint8_t SELECT_PIN = 6;
+const uint8_t ENTER_PIN = 7;
+const uint8_t BEEPER_PIN = 9;
 
 // Define the number of devices in the chain and the SPI hardware interface
 // NOTE: These pin numbers will probably not work with your hardware and may
@@ -73,8 +84,8 @@ const uint16_t SPLASH_DELAY = 3000;     // in milliseconds
 boardCoord_t movePos[TTT_BOARD_SIZE] = { 0 };
 
 // Handling for switch states (User Input)
-swState_t swAccept = { SWITCH_ACCEPT, false, 0 };
-swState_t swSelect = { SWITCH_SELECT, false, 0 };
+swState_t swAccept = { ENTER_PIN, false, 0 };
+swState_t swSelect = { SELECT_PIN, false, 0 };
 
 // Main objects used defined here
 MD_TTT TTT(tttCallback);
@@ -175,16 +186,20 @@ uint8_t getMove(void)
   switch (promptMode)
   {
   case UI_START:  // print the message
+    PRINTS("\n- START");
     userMessage("You move");
     promptMode = UI_HILIGHT;
     break;
 
   case UI_HILIGHT:  // find the first empty cell and highlight it
-    highlightCell(curPosUI, false);     // unhighlight current selection
+    PRINTS("\n- HILIGHT");
+    //highlightCell(curPosUI, false);     // unhighlight current selection
     for (curPosUI = 0; curPosUI<TTT_BOARD_SIZE; curPosUI++)
     {
+      PRINT(" ", curPosUI);
       if (TTT.getBoardPosition(curPosUI) == TTT_P0)
       {
+        PRINTS(": FOUND");
         highlightCell(curPosUI);        // highlight new selection
         break;
       }
@@ -200,25 +215,32 @@ uint8_t getMove(void)
     break;
 
   case UI_NEXT_HILIGHT: // user selected next cell, find it and highlight it
+    PRINTS("\n- NEXT HILIGHT");
     if (curPosUI < TTT_BOARD_SIZE)
       highlightCell(curPosUI, false);     // unhighlight current selection
 
     for (curPosUI=curPosUI+1; curPosUI<TTT_BOARD_SIZE; curPosUI++)
     {
+      PRINT(" ", curPosUI);
       if (TTT.getBoardPosition(curPosUI) == TTT_P0)
       {
+        PRINTS(": FOUND");
         highlightCell(curPosUI);        // highlight new selection
         break;
       }
     }
 
     if (curPosUI == TTT_BOARD_SIZE) // oops - none there
+    {
+      PRINTS(": NOT FOUND");
       promptMode = UI_HILIGHT;  // start again
+    }
     else
       promptMode = UI_SELECT;   // wait for a switch again
     break;
 
   case UI_ACCEPT: // we have a selection, return the appropriate move
+    PRINTS("\n- ACCEPT");
     highlightCell(curPosUI, false);     // unhighlight current selection
     m = curPosUI;
     promptMode = UI_START;  // set up for next time
@@ -307,6 +329,7 @@ void setup()
   mp.begin();
   mp.setFont(_Fixed_5x3);
   mp.setIntensity(4);
+  //mp.setRotation(MD_MAXPanel::ROT_90);
 
   // initialize switch pins for input
   pinMode(swAccept.pin, INPUT_PULLUP);

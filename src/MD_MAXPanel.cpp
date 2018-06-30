@@ -30,22 +30,22 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  * \brief Implements class definition and graphics methods
  */
 
-MD_MAXPanel::MD_MAXPanel(MD_MAX72XX::moduleType_t mod, uint8_t dataPin, uint8_t clkPin, uint8_t csPin, uint8_t xDevices, uint8_t yDevices):
-_xDevices(xDevices), _yDevices(yDevices)
+MD_MAXPanel::MD_MAXPanel(MD_MAX72XX::moduleType_t mod, uint8_t dataPin, uint8_t clkPin, uint8_t csPin, uint8_t xDevices, uint8_t yDevices) :
+_xDevices(xDevices), _yDevices(yDevices), _rotatedDisplay(false)
 {
   _D = new MD_MAX72XX(mod, dataPin, clkPin, csPin, xDevices*yDevices);
   _killOnDestruct = true;
 }
 
 MD_MAXPanel::MD_MAXPanel(MD_MAX72XX::moduleType_t mod, uint8_t csPin, uint8_t xDevices, uint8_t yDevices) :
-_xDevices(xDevices), _yDevices(yDevices)
+_xDevices(xDevices), _yDevices(yDevices), _rotatedDisplay(false)
 {
   _D = new MD_MAX72XX(mod, csPin, xDevices*yDevices);
   _killOnDestruct = true;
 }
 
 MD_MAXPanel::MD_MAXPanel(MD_MAX72XX *D, uint8_t xDevices, uint8_t yDevices) :
-_xDevices(xDevices), _yDevices(yDevices)
+_xDevices(xDevices), _yDevices(yDevices), _rotatedDisplay(false)
 {
   _D = D;
   _killOnDestruct = false;
@@ -63,6 +63,29 @@ MD_MAXPanel::~MD_MAXPanel(void)
   if (_killOnDestruct) delete _D;
 }
 
+uint16_t MD_MAXPanel::getXMax(void)
+{ 
+  uint16_t m;
+
+  if (_rotatedDisplay)
+    m = (_yDevices * ROW_SIZE) - 1;
+  else
+    m = (_xDevices * COL_SIZE) - 1;
+
+  return(m);
+}
+
+uint16_t MD_MAXPanel::getYMax(void) 
+{ 
+  uint16_t m;
+
+  if (_rotatedDisplay)
+    m = (_xDevices * COL_SIZE) - 1;
+  else
+    m = (_yDevices * ROW_SIZE) - 1;
+
+  return(m);
+}
 
 bool MD_MAXPanel::drawHLine(uint16_t y, uint16_t x1, uint16_t x2, bool state = true)
 // draw a horizontal line at row y between columns x1 and x2 inclusive
@@ -262,12 +285,44 @@ bool MD_MAXPanel::drawCircle(uint16_t xc, uint16_t yc, uint16_t r, bool state = 
   return(b);
 }
 
+uint16_t MD_MAXPanel::Y2Row(uint16_t x, uint16_t y)
+// Convert y coord to linear coord
+{
+  uint16_t Y;
+
+  if (_rotatedDisplay)
+  {
+    x = getXMax() - x;
+    Y = (ROW_SIZE - (x % ROW_SIZE) - 1);
+  }
+  else
+    Y = (ROW_SIZE - (y % ROW_SIZE) - 1);
+
+  return(Y);
+}
+
+uint16_t MD_MAXPanel::X2Col(uint16_t x, uint16_t y)
+// Convert x coord to linear coord
+{
+  uint16_t X;
+
+  if (_rotatedDisplay)
+  {
+    x = getXMax() - x;
+    X = ((x / ROW_SIZE) * (_xDevices * COL_SIZE) + (_xDevices * COL_SIZE) - 1 - (y % (_xDevices * COL_SIZE)));
+  }
+  else
+    X = ((y / ROW_SIZE) * (_xDevices * COL_SIZE) + (_xDevices * COL_SIZE) - 1 - (x % (_xDevices * COL_SIZE)));
+
+  return(X);
+}
+
 bool MD_MAXPanel::getPoint(uint16_t x, uint16_t y)
 {
   if (x > getXMax() || y > getYMax())
     return(false);
 
-  return(_D->getPoint(Y2ROW(x,y), X2COL(x,y)));
+  return(_D->getPoint(Y2Row(x,y), X2Col(x,y)));
 }
 
 bool MD_MAXPanel::setPoint(uint16_t x, uint16_t y, bool state = true)
@@ -277,6 +332,6 @@ bool MD_MAXPanel::setPoint(uint16_t x, uint16_t y, bool state = true)
 
   //PRINT("[", x); PRINT(",", y); PRINTS("]");
 
-  return(_D->setPoint(Y2ROW(x,y), X2COL(x,y), state));
+  return(_D->setPoint(Y2Row(x,y), X2Col(x,y), state));
 }
 

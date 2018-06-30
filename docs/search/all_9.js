@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['textrotation_5ft',['textRotation_t',['../class_m_d___m_a_x_panel.html#a44b689e7e7f309e3b297e0dafe4cc311',1,'MD_MAXPanel']]]
+  ['update',['update',['../class_m_d___m_a_x_panel.html#abcaac4635c9e377c7fe57d072589e752',1,'MD_MAXPanel::update(bool state)'],['../class_m_d___m_a_x_panel.html#a592a252dfe9db3488b98737bfb959a91',1,'MD_MAXPanel::update()']]]
 ];

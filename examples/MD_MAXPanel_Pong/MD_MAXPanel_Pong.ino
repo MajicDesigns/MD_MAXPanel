@@ -2,11 +2,13 @@
 //
 // Hardware Used
 // =============
-// LEFT_UP_PIN    - left bat up switch, INPUT_PULLUP
-// LEFT_DOWN_PIN  - right bat up switch, INPUT_PULLUP
-// RIGHT_UP_PIN   - left bat up switch, INPUT_PULLUP
-// RIGHT_DOWN_PIN - right bat up switch, INPUT_PULLUP
-// BEEPER_PIN     - piezo speaker
+// UP_PIN     - left bat up switch, INPUT_PULLUP
+// RIGHT_PIN  - right bat up switch, INPUT_PULLUP
+// RIGHT_PIN  - left bat up switch, INPUT_PULLUP
+// DOWN_PIN   - right bat up switch, INPUT_PULLUP
+// SELECT_PIN - unused
+// ENTER_PIN  - unused
+// BEEPER_PIN - piezo speaker
 // CLK_PIN, DATA_PIN, CS_PIN - LED matrix display connections
 //
 // Libraries used
@@ -44,11 +46,13 @@
 
 // Hardware pin definitions. 
 // All momentary on switches are initialised INPUT_PULLUP
+const uint8_t UP_PIN = 2;
+const uint8_t RIGHT_PIN = 3;
+const uint8_t DOWN_PIN = 4;
+const uint8_t LEFT_PIN = 5;
+const uint8_t SELECT_PIN = 6;
+const uint8_t ENTER_PIN = 7;
 const uint8_t BEEPER_PIN = 9;
-const uint8_t LEFT_UP_PIN = 2;
-const uint8_t LEFT_DOWN_PIN = 5;
-const uint8_t RIGHT_UP_PIN = 3;
-const uint8_t RIGHT_DOWN_PIN = 4;
 
 // Define the number of devices in the chain and the SPI hardware interface
 // NOTE: These pin numbers will probably not work with your hardware and may
@@ -292,6 +296,7 @@ void setup()
   mp.begin();
   mp.setFont(_Fixed_5x3);
   mp.setIntensity(4);
+  //mp.setRotation(MD_MAXPanel::ROT_90);
 
   sound.begin(BEEPER_PIN);
 
@@ -322,8 +327,8 @@ void loop(void)
     break;
 
   case S_INIT:  // initialise for a new game
-    batL.begin(BAT_EDGE_OFFSET, (FIELD_TOP - FIELD_BOTTOM) / 2, FIELD_BOTTOM + 1, FIELD_TOP - 1, BAT_SIZE_DEFAULT, LEFT_UP_PIN, LEFT_DOWN_PIN);
-    batR.begin(mp.getXMax() - BAT_EDGE_OFFSET, (FIELD_TOP - FIELD_BOTTOM) / 2, FIELD_BOTTOM + 1, FIELD_TOP - 1, BAT_SIZE_DEFAULT, RIGHT_UP_PIN, RIGHT_DOWN_PIN);
+    batL.begin(BAT_EDGE_OFFSET, (FIELD_TOP - FIELD_BOTTOM) / 2, FIELD_BOTTOM + 1, FIELD_TOP - 1, BAT_SIZE_DEFAULT, UP_PIN, LEFT_PIN);
+    batR.begin(mp.getXMax() - BAT_EDGE_OFFSET, (FIELD_TOP - FIELD_BOTTOM) / 2, FIELD_BOTTOM + 1, FIELD_TOP - 1, BAT_SIZE_DEFAULT, RIGHT_PIN, DOWN_PIN);
 
     scoreL.begin(&mp, BAT_EDGE_OFFSET, FIELD_TOP + 1 + mp.getFontHeight(), MAX_SCORE);
     scoreR.limit(MAX_SCORE);    // set width() used below
