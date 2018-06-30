@@ -71,6 +71,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 \page pageRevisionHistory Revision History
 Revision History
 ----------------
+Jul 2018 version 1.1.0
+- Renamed textRotation_t to rotation_t
+- Allow rotation of display (eg, landscape to portrait)
+- Restored missing bricks example
+
 Jun 2018 version 1.0.1
 - Extracted common elements of examples in .h file
 
@@ -103,18 +108,21 @@ class MD_MAXPanel
 {
 public:
   /**
-  * Text rotation enumerated type specification.
+  * Rotation enumerated type specification.
   *
-  * Used to define the rotation of the text to be displayed. The normal rotation
-  * is the standard Latin language left to right orientation. Rotation is specified
-  * anchored to the first character of the string - 0 points >, 90 ^, 180 < and 270 v. 
+  * Used to define rotation orientation (eg, text or display). 
+  * For text the normal rotation is the standard Latin language left to right 
+  * orientation. Rotation is specified anchored to the first character of the 
+  * string - 0 points >, 90 ^, 180 < and 270 v.
+  * For the display rotation 0 and 180 andre identical and 90 and 270 are identical.
+  * The rotation will shift the display between landscape and protrait mode.
   */
-  enum textRotation_t
+  enum rotation_t
   {
-    ROT_0,    ///< Rotation 0 degrees - first character in leftmost position, text going right (normal position)
-    ROT_90,   ///< Rotation 90 degrees - first character in lowest position, text going up
-    ROT_180,  ///< Rotation 180 degrees - first character in rightmost, text going left (text upside down and right to left)
-    ROT_270,  ///< Rotation 270 degrees - first character in highest position, text going down
+    ROT_0,    ///< Rotation 0 degrees
+    ROT_90,   ///< Rotation 90 degrees
+    ROT_180,  ///< Rotation 180 degrees
+    ROT_270,  ///< Rotation 270 degrees
   };
   
   /**
@@ -216,17 +224,40 @@ public:
 
   /**
    * Gets the maximum X coordinate.
+   * 
+   * Depends on the rotatrion status of the display.
    *
    * \return uint8_t the maximum X coordinate.
    */
-  inline uint16_t getXMax(void) { return((_xDevices * ROW_SIZE) - 1); };
+  inline uint16_t getXMax(void);
 
   /**
    * Gets the maximum Y coordinate.
    *
+   * Depends on the rotatrion status of the display.
+   *
    * \return uint16_t representing the number of columns.
    */
-  inline uint16_t getYMax(void) { return((_yDevices * COL_SIZE) - 1); };
+  inline uint16_t getYMax(void);
+
+  /**
+   * Get the rotation status of the display
+   * 
+   * \return rotation_t value for the current rotation (ROT_0 or ROT_90)
+   */
+  inline rotation_t getRotation(void) { return(_rotatedDisplay ? ROT_90 : ROT_0); }
+
+  /**
+  * Set rotation status of the display
+  *
+  * Set the display to be rotated or not. ROT_90 and ROT_270 rotate the display
+  * by 90 degrees in the same direction. ROT_O and ROT_180 are an unrotated display.
+  * The default is ROT_O (unrotated).
+  * 
+  * \param r rotation_t value for the current rotation (ROT_0 or ROT_90);
+  * \return No return value
+  */
+  inline void setRotation(rotation_t r) { _rotatedDisplay = (r == ROT_90) || (r == ROT_270); }
 
   /**
   * Turn auto display updates on or off.
@@ -391,7 +422,7 @@ public:
    * The method will get the status of a specific LED element based on its
    * coordinate position. The column number is dereferenced into the device
    * and column within the device, allowing the LEDs to be treated as a
-   * continuous pixel field.
+   * planar pixel field.
    *
    * \param x   x coordinate [0..getXMax()].
    * \param y   y coordinate [0..getYMax()].
@@ -406,7 +437,7 @@ public:
    * coordinate position. The LED will be turned on or off depending on the
    * value supplied. The column number is dereferenced into the device and
    * column within the device, allowing the LEDs to be treated as a
-   * continuous pixel field.
+   * planar pixel field.
    *
    * \param x     x coordinate [0..getXMax()].
    * \param y     y coordinate [0..getYMax()].
@@ -486,7 +517,7 @@ public:
   * \param state true - switch on; false - switch off. If omitted, default to true.
   * \return the length of the text in pixels.
   */
-  uint16_t drawText(uint16_t x, uint16_t y, char *psz, textRotation_t rot = ROT_0, bool state = true);
+  uint16_t drawText(uint16_t x, uint16_t y, char *psz, rotation_t rot = ROT_0, bool state = true);
 
   /** @} */
 
@@ -500,8 +531,11 @@ private:
 
   bool _updateEnabled;  // true if display updates are suspended
   uint8_t _charSpacing; // number of pixel columns between characters
+  bool _rotatedDisplay; // true if the display is rotated
 
-  bool MD_MAXPanel::drawCirclePoints(uint16_t xc, uint16_t yc, uint16_t x, uint16_t y, bool state);
+  bool drawCirclePoints(uint16_t xc, uint16_t yc, uint16_t x, uint16_t y, bool state);
+  uint16_t Y2Row(uint16_t x, uint16_t y);   // Convert y coord to linear coord
+  uint16_t X2Col(uint16_t x, uint16_t y);   // Convert x coord to linear coord
 };
 
 #endif

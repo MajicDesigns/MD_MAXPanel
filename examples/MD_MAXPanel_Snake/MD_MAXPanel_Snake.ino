@@ -2,7 +2,10 @@
 //
 // Hardware used
 // =============
-//  LEFT_PIN, RIGHT_PIN, UP_PIN, DOWN_PIN - moves switches, INPUT_PULLUP
+// LEFT_PIN   - left move switch, INPUT_PULLUP
+// UP_PIN     - up move switch, INPUT_PULLUP
+// DOWN_PIN   - down move switch, INPUT_PULLUP
+// RIGHT_PIN  - right move switch, INPUT_PULLUP
 // BEEPER_PIN - piezo speaker
 // CLK_PIN, DATA_PIN, CS_PIN - LED matrix display connections
 //
@@ -383,6 +386,7 @@ void setup()
   mp.begin();
   mp.setFont(_Fixed_5x3);
   mp.setIntensity(4);
+  //mp.setRotation(MD_MAXPanel::ROT_90);
 
   randomSeed(seedOut(31, RANDOM_SEED_PORT));
 

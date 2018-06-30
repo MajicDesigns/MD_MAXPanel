@@ -175,16 +175,20 @@ uint8_t getMove(void)
   switch (promptMode)
   {
   case UI_START:  // print the message
+    PRINTS("\n- START");
     userMessage("You move");
     promptMode = UI_HILIGHT;
     break;
 
   case UI_HILIGHT:  // find the first empty cell and highlight it
-    highlightCell(curPosUI, false);     // unhighlight current selection
+    PRINTS("\n- HILIGHT");
+    //highlightCell(curPosUI, false);     // unhighlight current selection
     for (curPosUI = 0; curPosUI<TTT_BOARD_SIZE; curPosUI++)
     {
+      PRINT(" ", curPosUI);
       if (TTT.getBoardPosition(curPosUI) == TTT_P0)
       {
+        PRINTS(": FOUND");
         highlightCell(curPosUI);        // highlight new selection
         break;
       }
@@ -200,25 +204,32 @@ uint8_t getMove(void)
     break;
 
   case UI_NEXT_HILIGHT: // user selected next cell, find it and highlight it
+    PRINTS("\n- NEXT HILIGHT");
     if (curPosUI < TTT_BOARD_SIZE)
       highlightCell(curPosUI, false);     // unhighlight current selection
 
     for (curPosUI=curPosUI+1; curPosUI<TTT_BOARD_SIZE; curPosUI++)
     {
+      PRINT(" ", curPosUI);
       if (TTT.getBoardPosition(curPosUI) == TTT_P0)
       {
+        PRINTS(": FOUND");
         highlightCell(curPosUI);        // highlight new selection
         break;
       }
     }
 
     if (curPosUI == TTT_BOARD_SIZE) // oops - none there
+    {
+      PRINTS(": NOT FOUND");
       promptMode = UI_HILIGHT;  // start again
+    }
     else
       promptMode = UI_SELECT;   // wait for a switch again
     break;
 
   case UI_ACCEPT: // we have a selection, return the appropriate move
+    PRINTS("\n- ACCEPT");
     highlightCell(curPosUI, false);     // unhighlight current selection
     m = curPosUI;
     promptMode = UI_START;  // set up for next time
@@ -307,6 +318,7 @@ void setup()
   mp.begin();
   mp.setFont(_Fixed_5x3);
   mp.setIntensity(4);
+  //mp.setRotation(MD_MAXPanel::ROT_90);
 
   // initialize switch pins for input
   pinMode(swAccept.pin, INPUT_PULLUP);

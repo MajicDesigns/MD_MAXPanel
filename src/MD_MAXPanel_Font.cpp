@@ -29,7 +29,7 @@ uint16_t MD_MAXPanel::getTextWidth(char *psz)
   return(sum);
 }
 
-uint16_t MD_MAXPanel::drawText(uint16_t x, uint16_t y, char *psz, textRotation_t rot, bool state)
+uint16_t MD_MAXPanel::drawText(uint16_t x, uint16_t y, char *psz, rotation_t rot, bool state)
 {
   uint8_t height = _D->getFontHeight();
   uint8_t bufSize = _D->getMaxFontWidth() + _charSpacing;

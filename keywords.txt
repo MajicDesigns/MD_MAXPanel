@@ -7,7 +7,7 @@
 #######################################
 
 MD_MAXPanel	KEYWORD1
-textRotation_t	KEYWORD1
+rotation_t	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -30,6 +30,8 @@ setIntensity	KEYWORD2
 setFont	KEYWORD2
 setCharSpacing	KEYWORD2
 getCharSpacing	KEYWORD2
+setRotation	KEYWORD2
+getRotation	KEYWORD2
 getTextWidth	KEYWORD2
 getFontHeight	KEYWORD2
 drawText	KEYWORD2

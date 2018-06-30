@@ -574,6 +574,7 @@ void setup()
   mp.begin();
   mp.setFont(_Fixed_5x3);
   mp.setIntensity(4);
+  // mp.setRotation(MD_MAXPanel::ROT_90);
 
   sound.begin(BEEPER_PIN);
   score.limit(MAX_SCORE);   // so we can use width() below

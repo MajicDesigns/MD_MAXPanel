@@ -5,7 +5,7 @@ var searchData=
   ['drawline',['drawLine',['../class_m_d___m_a_x_panel.html#a0f4f04fd3df70cbb3101ea86e949c1b2',1,'MD_MAXPanel']]],
   ['drawquadrilateral',['drawQuadrilateral',['../class_m_d___m_a_x_panel.html#abc926140c266950e3f630ba56ba7912d',1,'MD_MAXPanel']]],
   ['drawrectangle',['drawRectangle',['../class_m_d___m_a_x_panel.html#a04e125626473f6d6c85301bd46814c13',1,'MD_MAXPanel']]],
-  ['drawtext',['drawText',['../class_m_d___m_a_x_panel.html#a4a73c0619b3291dcbe679d3afe9dc43a',1,'MD_MAXPanel']]],
+  ['drawtext',['drawText',['../class_m_d___m_a_x_panel.html#adf62160a4b71e5d9fcc49563ca184e2a',1,'MD_MAXPanel']]],
   ['drawtriangle',['drawTriangle',['../class_m_d___m_a_x_panel.html#a1b16343397fa900b86c62e0394a704ac',1,'MD_MAXPanel']]],
   ['drawvline',['drawVLine',['../class_m_d___m_a_x_panel.html#ad84af77c2070832bdc4f64189ebb762f',1,'MD_MAXPanel']]]
 ];
