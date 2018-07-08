@@ -471,7 +471,7 @@ void setup()
   mp.begin();
   mp.setFont(_Fixed_5x3);
   mp.setIntensity(4);
-  //mp.setRotation(MD_MAXPanel::ROT_90);
+  mp.setRotation(MD_MAXPanel::ROT_90);
 
   // one time initialization
   FIELD_TOP = mp.getYMax() - mp.getFontHeight() - 2;

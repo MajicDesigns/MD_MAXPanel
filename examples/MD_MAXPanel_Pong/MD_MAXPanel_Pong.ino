@@ -134,8 +134,8 @@ public:
     if (x1 != _x) return(NO_HIT);
 
     // if the ball is at 
-    // - the top of the bat and travelling down, or 
-    // - the bottom of the bat and travelling up
+    // - the top of the bat and traveling down, or 
+    // - the bottom of the bat and traveling up
     // then it is a corner hit
     if ((y1 == _y + (_size / 2) && dy < 0) || (y1 == _y - (_size / 2) && dy>0))
       return(CORNER_HIT);
@@ -296,7 +296,7 @@ void setup()
   mp.begin();
   mp.setFont(_Fixed_5x3);
   mp.setIntensity(4);
-  //mp.setRotation(MD_MAXPanel::ROT_90);
+  mp.setRotation(MD_MAXPanel::ROT_90);
 
   sound.begin(BEEPER_PIN);
 

@@ -71,6 +71,9 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 \page pageRevisionHistory Revision History
+Jul 2018 version 1.1.1
+- Finalised preferred orientation for examples
+
 Jul 2018 version 1.1.0
 - Renamed textRotation_t to rotation_t
 - Allow rotation of display (eg, landscape to portrait)
@@ -202,7 +205,7 @@ public:
   /**
   * Clear the specified display area.
   *
-  * Clear the recangular area specifed by the coordinates.
+  * Clear the rectangular area specified by the coordinates.
   *
   * \param x1 the upper left x coordinate of the window
   * \param y1 the upper left y coordinate of the window
@@ -225,7 +228,7 @@ public:
   /**
    * Gets the maximum X coordinate.
    * 
-   * Depends on the rotatrion status of the display.
+   * Depends on the rotation status of the display.
    *
    * \return uint8_t the maximum X coordinate.
    */
@@ -234,7 +237,7 @@ public:
   /**
    * Gets the maximum Y coordinate.
    *
-   * Depends on the rotatrion status of the display.
+   * Depends on the rotation status of the display.
    *
    * \return uint16_t representing the number of columns.
    */
@@ -459,7 +462,7 @@ public:
   * MD_MAX72xx font builder (refer to documentation for the tool and the MD_MAX72xx library).
   * Passing nullptr resets to the library default font.
   *
-  * \param fontDef	Pointer to the font definition to be used.
+  * \param fontDef  Pointer to the font definition to be used.
   * \return No return value.
   */
   inline void setFont(MD_MAX72XX::fontType_t *fontDef) { _D->setFont(fontDef); }
@@ -489,7 +492,7 @@ public:
   * Get the length of a string in pixels. The text is a nul terminated characters array.
   * The returned length will include all inter-character Set number of pixel columns between each character in a displayed text.
   *
-  * \param psz	the text string as a nul terminated character array.
+  * \param psz  the text string as a nul terminated character array.
   * \return the length in pixels.
   */
   uint16_t getTextWidth(char *psz);
