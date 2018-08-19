@@ -71,6 +71,9 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 \page pageRevisionHistory Revision History
+pre-release version 1.1.2
+- Fixed reported WEMOS D1 compiler issues
+
 Jul 2018 version 1.1.1
 - Finalised preferred orientation for examples
 
@@ -200,7 +203,7 @@ public:
   *
   * \return No return value.
   */
-  inline void clear(void) { _D->clear(0, _xDevices*_yDevices); };
+  void clear(void) { _D->clear(0, _xDevices*_yDevices); };
 
   /**
   * Clear the specified display area.
@@ -213,7 +216,7 @@ public:
   * \param y2 the upper lower right y coordinate of the window
   * \return No return value.
   */
-  inline void clear(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2) { for (uint8_t i=x1; i<=x2; i++) drawVLine(i, y1, y2, false); };
+  void clear(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2) { for (uint8_t i=x1; i<=x2; i++) drawVLine(i, y1, y2, false); };
 
   /**
   * Get a pointer to the instantiated graphics object.
@@ -223,7 +226,7 @@ public:
   *
   * \return Pointer to the MD_MAX72xx object used by the library.
   */
-  inline MD_MAX72XX *getGraphicObject(void) { return(_D); }
+  MD_MAX72XX *getGraphicObject(void) { return(_D); }
 
   /**
    * Gets the maximum X coordinate.
@@ -232,7 +235,7 @@ public:
    *
    * \return uint8_t the maximum X coordinate.
    */
-  inline uint16_t getXMax(void);
+  uint16_t getXMax(void);
 
   /**
    * Gets the maximum Y coordinate.
@@ -241,14 +244,14 @@ public:
    *
    * \return uint16_t representing the number of columns.
    */
-  inline uint16_t getYMax(void);
+  uint16_t getYMax(void);
 
   /**
    * Get the rotation status of the display
    * 
    * \return rotation_t value for the current rotation (ROT_0 or ROT_90)
    */
-  inline rotation_t getRotation(void) { return(_rotatedDisplay ? ROT_90 : ROT_0); }
+  rotation_t getRotation(void) { return(_rotatedDisplay ? ROT_90 : ROT_0); }
 
   /**
   * Set rotation status of the display
@@ -260,7 +263,7 @@ public:
   * \param r rotation_t value for the current rotation (ROT_0 or ROT_90);
   * \return No return value
   */
-  inline void setRotation(rotation_t r) { _rotatedDisplay = (r == ROT_90) || (r == ROT_270); }
+  void setRotation(rotation_t r) { _rotatedDisplay = (r == ROT_90) || (r == ROT_270); }
 
   /**
   * Turn auto display updates on or off.
@@ -272,7 +275,7 @@ public:
   * \param state  true to enable update, false to suspend updates.
   * \return No return value.
   */
-  inline void update(bool state) { _updateEnabled = state; _D->control(MD_MAX72XX::UPDATE, state ? MD_MAX72XX::ON : MD_MAX72XX::OFF); };
+  void update(bool state) { _updateEnabled = state; _D->control(MD_MAX72XX::UPDATE, state ? MD_MAX72XX::ON : MD_MAX72XX::OFF); };
 
   /**
   * Force a display update.
@@ -282,7 +285,7 @@ public:
   *
   * \return No return value.
   */
-  inline void update() { _D->update(); };
+  void update() { _D->update(); };
 
   /**
   * Set the display intensity.
@@ -292,7 +295,7 @@ public:
   * \param intensity the intensity to set the display (0-15).
   * \return No return value.
   */
-  inline void setIntensity(uint8_t intensity) { _D->control(MD_MAX72XX::INTENSITY, intensity); }
+  void setIntensity(uint8_t intensity) { _D->control(MD_MAX72XX::INTENSITY, intensity); }
 
   /** @} */
 
@@ -465,7 +468,7 @@ public:
   * \param fontDef  Pointer to the font definition to be used.
   * \return No return value.
   */
-  inline void setFont(MD_MAX72XX::fontType_t *fontDef) { _D->setFont(fontDef); }
+  void setFont(MD_MAX72XX::fontType_t *fontDef) { _D->setFont(fontDef); }
   
   /**
   * Set the spacing between characters.
@@ -475,7 +478,7 @@ public:
   * \param spacing  the spacing between characters.
   * \return No return value.
   */
-  inline void setCharSpacing(uint8_t spacing) { _charSpacing = spacing; }
+  void setCharSpacing(uint8_t spacing) { _charSpacing = spacing; }
 
   /**
   * Get the spacing between characters.
@@ -484,7 +487,7 @@ public:
   *
   * \return the spacing between characters.
   */
-  inline uint8_t getCharSpacing(void) { return(_charSpacing); }
+  uint8_t getCharSpacing(void) { return(_charSpacing); }
 
   /**
   * Get the length of a text string in pixels.
@@ -505,7 +508,7 @@ public:
   *
   * \return the height in pixels.
   */
-  inline uint16_t getFontHeight(void) { return(_D->getFontHeight()); }
+  uint16_t getFontHeight(void) { return(_D->getFontHeight()); }
 
   /**
   * Draw text on the display.

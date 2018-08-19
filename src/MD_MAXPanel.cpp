@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 /**
  * \file
- * \brief Implements class definition and graphics methods
+ * \brief Implements class graphics methods
  */
 
 MD_MAXPanel::MD_MAXPanel(MD_MAX72XX::moduleType_t mod, uint8_t dataPin, uint8_t clkPin, uint8_t csPin, uint8_t xDevices, uint8_t yDevices) :
@@ -87,7 +87,7 @@ uint16_t MD_MAXPanel::getYMax(void)
   return(m);
 }
 
-bool MD_MAXPanel::drawHLine(uint16_t y, uint16_t x1, uint16_t x2, bool state = true)
+bool MD_MAXPanel::drawHLine(uint16_t y, uint16_t x1, uint16_t x2, bool state)
 // draw a horizontal line at row y between columns x1 and x2 inclusive
 {
   bool b = true;
@@ -109,7 +109,7 @@ bool MD_MAXPanel::drawHLine(uint16_t y, uint16_t x1, uint16_t x2, bool state = t
   return(b);
 }
 
-bool MD_MAXPanel::drawVLine(uint16_t x, uint16_t y1, uint16_t y2, bool state = true)
+bool MD_MAXPanel::drawVLine(uint16_t x, uint16_t y1, uint16_t y2, bool state)
 // draw a vertical line at column x between rows y1 and y2 inclusive
 {
   bool b = true;
@@ -131,7 +131,7 @@ bool MD_MAXPanel::drawVLine(uint16_t x, uint16_t y1, uint16_t y2, bool state = t
   return(b);
 }
 
-bool MD_MAXPanel::drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, bool state = true)
+bool MD_MAXPanel::drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, bool state)
 // draw an arbitrary line between two points using Bresentham's line algorithm
 // Bresentham's line algorithm at https://rosettacode.org/wiki/Bitmap/Bresenham%27s_line_algorithm#C
 {
@@ -184,7 +184,7 @@ bool MD_MAXPanel::drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, b
   return(b);
 }
 
-bool MD_MAXPanel::drawRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, bool state = true)
+bool MD_MAXPanel::drawRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, bool state)
 // draw a rectangle given the 2 diagonal vertices
 {
   bool b = true;
@@ -201,7 +201,7 @@ bool MD_MAXPanel::drawRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t 
   return(b);
 }
 
-bool MD_MAXPanel::drawQuadrilateral(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t x4, uint16_t y4, bool state = true)
+bool MD_MAXPanel::drawQuadrilateral(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t x4, uint16_t y4, bool state)
 // draw a arbitrary quadrilateral given the 4 corner vertices
 {
   bool b = true;
@@ -218,7 +218,7 @@ bool MD_MAXPanel::drawQuadrilateral(uint16_t x1, uint16_t y1, uint16_t x2, uint1
   return(b);
 }
 
-bool MD_MAXPanel::drawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, bool state = true)
+bool MD_MAXPanel::drawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, bool state)
 // draw an arbitrary triangle given the 3 corner vertices
 {
   bool b = true;
@@ -251,7 +251,7 @@ bool MD_MAXPanel::drawCirclePoints(uint16_t xc, uint16_t yc, uint16_t x, uint16_
   return(b);
 }
 
-bool MD_MAXPanel::drawCircle(uint16_t xc, uint16_t yc, uint16_t r, bool state = true)
+bool MD_MAXPanel::drawCircle(uint16_t xc, uint16_t yc, uint16_t r, bool state)
 // draw a circle given center and radius
 // Bresenhams Algorith from http://www.pracspedia.com/CG/bresenhamcircle.html
 {
@@ -325,7 +325,7 @@ bool MD_MAXPanel::getPoint(uint16_t x, uint16_t y)
   return(_D->getPoint(Y2Row(x,y), X2Col(x,y)));
 }
 
-bool MD_MAXPanel::setPoint(uint16_t x, uint16_t y, bool state = true)
+bool MD_MAXPanel::setPoint(uint16_t x, uint16_t y, bool state)
 {
   if (x > getXMax() || y > getYMax())
     return(false);
