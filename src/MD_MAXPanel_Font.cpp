@@ -14,7 +14,7 @@ This file contains font and text related methods.
  * \brief Implements font and text methods
  */
 
-uint16_t MD_MAXPanel::getTextWidth(char *psz)
+uint16_t MD_MAXPanel::getTextWidth(const char *psz)
 {
   uint16_t  sum = 0;
   uint8_t bufSize = _D->getMaxFontWidth();
@@ -29,7 +29,7 @@ uint16_t MD_MAXPanel::getTextWidth(char *psz)
   return(sum);
 }
 
-uint16_t MD_MAXPanel::drawText(uint16_t x, uint16_t y, char *psz, rotation_t rot, bool state)
+uint16_t MD_MAXPanel::drawText(uint16_t x, uint16_t y, const char *psz, rotation_t rot, bool state)
 {
   uint8_t height = _D->getFontHeight();
   uint8_t bufSize = _D->getMaxFontWidth() + _charSpacing;
@@ -56,28 +56,28 @@ uint16_t MD_MAXPanel::drawText(uint16_t x, uint16_t y, char *psz, rotation_t rot
     case ROT_0:
       for (uint16_t i = 0; i < size; i++)
         for (uint16_t j = 0; j < height; j++)
-            setPoint(x + i, y - j, (buf[i] & (1 << j) ? state : false));
+            setPoint(x + i, y - j, (buf[i] & (1 << j) ? state : !state));
       x += size;
       break;
 
     case ROT_90:
       for (uint16_t j = 0; j < size; j++)
         for (uint16_t i = 0; i < height; i++)
-          setPoint(x + i, y + j, (buf[j] & (1 << i) ? state : false));
+          setPoint(x + i, y + j, (buf[j] & (1 << i) ? state : !state));
       y += size;
       break;
 
     case ROT_180:
       for (uint16_t i = 0; i < size; i++)
         for (uint16_t j = 0; j < height; j++)
-          setPoint(x - i, y + j, (buf[i] & (1 << j) ? state : false));
+          setPoint(x - i, y + j, (buf[i] & (1 << j) ? state : !state));
       x -= size;
       break;
 
     case ROT_270:
       for (uint16_t j = 0; j < size; j++)
         for (uint16_t i = 0; i < height; i++)
-          setPoint(x - i, y - j, (buf[j] & (1 << i) ? state : false));
+          setPoint(x - i, y - j, (buf[j] & (1 << i) ? state : !state));
       y -= size;
       break;
     }

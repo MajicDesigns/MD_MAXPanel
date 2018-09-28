@@ -44,7 +44,7 @@ MD_MAXPanel mp = MD_MAXPanel(HARDWARE_TYPE, CS_PIN, X_DEVICES, Y_DEVICES);
 // We always wait a bit between updates of the display
 #define  DELAYTIME  100  // in milliseconds
 
-void zeroPointSet(void)
+void zeroPointer(void)
 // Demonstrates the use of setPoint and
 // show where the zero point is in the display
 {
@@ -66,8 +66,18 @@ void showUp(void)
 // Triangle pointing to the of the display as currently rotated
 {
   PRINTS("\nTop of display");
+  char sz[] = "UP";
+  uint8_t w, h;
+   
+  mp.setFont(_Fixed_5x3);
+  w = mp.getTextWidth(sz); 
+  h = 5;
+
   mp.clear();
   mp.drawTriangle(0, mp.getYMax() / 2, (mp.getXMax() + 1) / 2, mp.getYMax(), mp.getXMax(), mp.getYMax() / 2, true);
+  mp.drawText((mp.getXMax() - w) / 2, (mp.getYMax() / 2) + 2 + h, sz);
+  mp.setFont(nullptr);
+
   delay(DELAYTIME * 10);
 }
 
@@ -176,6 +186,25 @@ void vLines(void)
   }
 }
 
+void rectanglesFill(void)
+// Demonstrate the use of drawFillRectangle()
+// Various sized rectangles spanning the entire display
+{
+  PRINTS("\nRectangles Fill");
+  mp.clear();
+
+  for (uint8_t stepSize = 2; stepSize < 6; stepSize++)
+  {
+    for (uint16_t i = 0; i < min(mp.getXMax(), mp.getYMax()) / 2; i += stepSize)
+    {
+      mp.drawFillRectangle(i, i, mp.getXMax() - i, mp.getYMax() - i, true);
+      delay(2 * DELAYTIME);
+      mp.drawFillRectangle(i, i, mp.getXMax() - i, mp.getYMax() - i, false);
+      delay(2 * DELAYTIME);
+    }
+  }
+}
+
 void rectangles(void)
 // Demonstrate the use of drawRectangle()
 // Nested rectangles spanning the entire display
@@ -225,11 +254,38 @@ void quadrilaterals(void)
   }
 }
 
+void trianglesFill(void)
+// Demonstrate the use of drawFillTriangle()
+// Random triangles.
+{
+  const uint8_t NUM_TRIANGLE = 25;
+  const uint8_t NUM_VERTEX = 3;
+
+  uint16_t x[NUM_VERTEX], y[NUM_VERTEX];
+
+  PRINTS("\nTriangles Fill");
+  mp.clear();
+
+  for (uint8_t j = 0; j < NUM_TRIANGLE; j++)
+  {
+    for (uint16_t i = 0; i < NUM_VERTEX; i++)
+    {
+      x[i] = random(mp.getXMax() + 1);
+      y[i] = random(mp.getYMax() + 1);
+    }
+
+    mp.drawFillTriangle(x[0], y[0], x[1], y[1], x[2], y[2], true);
+    delay(2 * DELAYTIME);
+    mp.drawFillTriangle(x[0], y[0], x[1], y[1], x[2], y[2], false);
+    delay(2 * DELAYTIME);
+  }
+}
+
 void triangles(void)
 // Demonstrate the use of drawTriangle()
 // Random triangles.
 {
-  const uint8_t NUM_TRIANGLE = 50;
+  const uint8_t NUM_TRIANGLE = 25;
   const uint8_t NUM_VERTEX = 3;
 
   uint16_t x[NUM_VERTEX], y[NUM_VERTEX];
@@ -246,8 +302,28 @@ void triangles(void)
     }
 
     mp.drawTriangle(x[0], y[0], x[1], y[1], x[2], y[2], true);
-    delay(DELAYTIME);
+    delay(2 * DELAYTIME);
     mp.drawTriangle(x[0], y[0], x[1], y[1], x[2], y[2], false);
+    delay(2 * DELAYTIME);
+  }
+}
+
+void circlesFill(void)
+// Demonstrate the use of drawFillCircle()
+// Nested circles spanning the entire display
+{
+  PRINTS("\nCircles Fill");
+  mp.clear();
+
+  for (uint8_t stepSize = 2; stepSize < 6; stepSize++)
+  {
+    for (uint16_t i = stepSize; i < min(mp.getXMax(), mp.getYMax()) / 2; i += stepSize)
+    {
+      mp.drawFillCircle(mp.getXMax()/2, mp.getYMax()/2, i, true);
+      delay(2 * DELAYTIME);
+      mp.drawFillCircle(mp.getXMax() / 2, mp.getYMax() / 2, i, false);
+      delay(2 * DELAYTIME);
+    }
   }
 }
 
@@ -262,7 +338,7 @@ void circles(void)
   {
     for (uint16_t i = stepSize; i < min(mp.getXMax(), mp.getYMax()) / 2; i += stepSize)
     {
-      mp.drawCircle(mp.getXMax()/2, mp.getYMax()/2, i, true);
+      mp.drawCircle(mp.getXMax() / 2, mp.getYMax() / 2, i, true);
       delay(2 * DELAYTIME);
     }
 
@@ -284,7 +360,7 @@ void bounce(void)
   
   uint16_t  nCounter = 0;
 
-  uint16_t  y = random(mp.getYMax()), x = random(mp.getYMax());
+  uint16_t  y = random(maxY/2) + maxY/2, x = random(maxX/2) + maxX/2;
   int8_t dy = 1, dx = 1;	// delta row and column
 
   PRINTS("\nBouncing ball");
@@ -343,17 +419,20 @@ void setup(void)
 
 void loop(void)
 {
-  zeroPointSet();
+  zeroPointer();
   showUp();
   brightness();
   lines();
   hLines();
   vLines();
   rectangles();
+  rectanglesFill();
   circles();
+  circlesFill();
+  triangles();
+  trianglesFill();
   quadrilaterals();
   bounce();
-  triangles();
   text(_Fixed_5x3);
   text(nullptr);
 

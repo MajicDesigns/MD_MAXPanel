@@ -31,7 +31,7 @@
   <td id="projectlogo"><img alt="Logo" src="MajicDesigns_Logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">MD_MAXPanel LED Matrix Panel Arduino Library
-   &#160;<span id="projectnumber">1.1</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">Library to control a panel of connected MAX72XX devices</div>
   </td>
@@ -123,8 +123,8 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Methods for object management.</div></td></tr>
 <tr class="memitem:a052fa07a510eb92b6ffa3605f75a7dfd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#a052fa07a510eb92b6ffa3605f75a7dfd">clear</a> (void)</td></tr>
 <tr class="separator:a052fa07a510eb92b6ffa3605f75a7dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a3712f9deb90d886be12bb1bc9e66f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#a6a3712f9deb90d886be12bb1bc9e66f4">clear</a> (uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)</td></tr>
-<tr class="separator:a6a3712f9deb90d886be12bb1bc9e66f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17d910342f29983c059b4fad864d74c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#a17d910342f29983c059b4fad864d74c7">clear</a> (uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, bool state=false)</td></tr>
+<tr class="separator:a17d910342f29983c059b4fad864d74c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae899a4a7851b017261c7d44aae39a74a"><td class="memItemLeft" align="right" valign="top">MD_MAX72XX *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#ae899a4a7851b017261c7d44aae39a74a">getGraphicObject</a> (void)</td></tr>
 <tr class="separator:ae899a4a7851b017261c7d44aae39a74a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34e9ac92b8beb91335f59d304b1979d6"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#a34e9ac92b8beb91335f59d304b1979d6">getXMax</a> (void)</td></tr>
@@ -150,12 +150,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad84af77c2070832bdc4f64189ebb762f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04e125626473f6d6c85301bd46814c13"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#a04e125626473f6d6c85301bd46814c13">drawRectangle</a> (uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, bool state=true)</td></tr>
 <tr class="separator:a04e125626473f6d6c85301bd46814c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d9f6090bd6dd5504f31eb9a59520dd2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#a8d9f6090bd6dd5504f31eb9a59520dd2">drawFillRectangle</a> (uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, bool state=true)</td></tr>
+<tr class="separator:a8d9f6090bd6dd5504f31eb9a59520dd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b16343397fa900b86c62e0394a704ac"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#a1b16343397fa900b86c62e0394a704ac">drawTriangle</a> (uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, bool state=true)</td></tr>
 <tr class="separator:a1b16343397fa900b86c62e0394a704ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7304845a845877623462f1d4fd032af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#ad7304845a845877623462f1d4fd032af">drawFillTriangle</a> (uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, bool state=true)</td></tr>
+<tr class="separator:ad7304845a845877623462f1d4fd032af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc926140c266950e3f630ba56ba7912d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#abc926140c266950e3f630ba56ba7912d">drawQuadrilateral</a> (uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t x4, uint16_t y4, bool state=true)</td></tr>
 <tr class="separator:abc926140c266950e3f630ba56ba7912d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8fe47bce046f97b03afe0200a08f50c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#ad8fe47bce046f97b03afe0200a08f50c">drawCircle</a> (uint16_t xc, uint16_t yc, uint16_t r, bool state=true)</td></tr>
 <tr class="separator:ad8fe47bce046f97b03afe0200a08f50c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fd7430213d6c895e8f2cbd4377227f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#a1fd7430213d6c895e8f2cbd4377227f1">drawFillCircle</a> (uint16_t xc, uint16_t yc, uint16_t r, bool state=true)</td></tr>
+<tr class="separator:a1fd7430213d6c895e8f2cbd4377227f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a399ba66032092d6f64c2514933f8560b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#a399ba66032092d6f64c2514933f8560b">getPoint</a> (uint16_t x, uint16_t y)</td></tr>
 <tr class="separator:a399ba66032092d6f64c2514933f8560b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7047c3aad849e77af5f74fc31b6fc59"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#ad7047c3aad849e77af5f74fc31b6fc59">setPoint</a> (uint16_t x, uint16_t y, bool state=true)</td></tr>
@@ -167,12 +173,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8fb6a1bf4c645df087f5b4c6a940bc74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f9de9874f1b4033d9be5145ef298ba2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#a2f9de9874f1b4033d9be5145ef298ba2">getCharSpacing</a> (void)</td></tr>
 <tr class="separator:a2f9de9874f1b4033d9be5145ef298ba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad08d1ad2f515faf53ff770aa4386d06c"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#ad08d1ad2f515faf53ff770aa4386d06c">getTextWidth</a> (char *psz)</td></tr>
-<tr class="separator:ad08d1ad2f515faf53ff770aa4386d06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64a0e701e1b0623c513d21146a3f7628"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#a64a0e701e1b0623c513d21146a3f7628">getTextWidth</a> (const char *psz)</td></tr>
+<tr class="separator:a64a0e701e1b0623c513d21146a3f7628"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21b7b9c7328b3a0969cc9bade6877574"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#a21b7b9c7328b3a0969cc9bade6877574">getFontHeight</a> (void)</td></tr>
 <tr class="separator:a21b7b9c7328b3a0969cc9bade6877574"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf62160a4b71e5d9fcc49563ca184e2a"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#adf62160a4b71e5d9fcc49563ca184e2a">drawText</a> (uint16_t x, uint16_t y, char *psz, <a class="el" href="class_m_d___m_a_x_panel.html#aa61dd32299aec8927a32782503e5304b">rotation_t</a> rot=<a class="el" href="class_m_d___m_a_x_panel.html#aa61dd32299aec8927a32782503e5304ba6ce5cb2b6014e2525b396f45e51791ea">ROT_0</a>, bool state=true)</td></tr>
-<tr class="separator:adf62160a4b71e5d9fcc49563ca184e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb5cc45450a1f1258feae891761c1e09"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_d___m_a_x_panel.html#aeb5cc45450a1f1258feae891761c1e09">drawText</a> (uint16_t x, uint16_t y, const char *psz, <a class="el" href="class_m_d___m_a_x_panel.html#aa61dd32299aec8927a32782503e5304b">rotation_t</a> rot=<a class="el" href="class_m_d___m_a_x_panel.html#aa61dd32299aec8927a32782503e5304ba6ce5cb2b6014e2525b396f45e51791ea">ROT_0</a>, bool state=true)</td></tr>
+<tr class="separator:aeb5cc45450a1f1258feae891761c1e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Core object for the <a class="el" href="class_m_d___m_a_x_panel.html">MD_MAXPanel</a> library </p>
@@ -425,8 +431,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6a3712f9deb90d886be12bb1bc9e66f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a3712f9deb90d886be12bb1bc9e66f4">&#9670;&nbsp;</a></span>clear() <span class="overload">[2/2]</span></h2>
+<a id="a17d910342f29983c059b4fad864d74c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17d910342f29983c059b4fad864d74c7">&#9670;&nbsp;</a></span>clear() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -453,7 +459,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>y2</em>&#160;</td>
+          <td class="paramname"><em>y2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>state</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -463,13 +475,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Clear the specified display area.</p>
-<p>Clear the rectangular area specified by the coordinates.</p>
+<p>Clear the rectangular area specified by the coordinates by setting the pixels to the state specified (default is off).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x1</td><td>the upper left x coordinate of the window </td></tr>
     <tr><td class="paramname">y1</td><td>the upper left y coordinate of the window </td></tr>
     <tr><td class="paramname">x2</td><td>the lower right x coordinate of the window </td></tr>
     <tr><td class="paramname">y2</td><td>the upper lower right y coordinate of the window </td></tr>
+    <tr><td class="paramname">state</td><td>true - switch pixels on; false - switch pixels off. If omitted, default to false. </td></tr>
   </table>
   </dd>
 </dl>
@@ -515,11 +528,196 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Draw a circle given center and radius</p>
+<p>Draw a circle given center and radius. The LEDs will be turned on or off depending on the value supplied. The coordinates will be dereferenced into the device and column within the device, allowing the LEDs to be treated as a continuous pixel field.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">xc</td><td>x coordinate for the center point [0..<a class="el" href="class_m_d___m_a_x_panel.html#a34e9ac92b8beb91335f59d304b1979d6">getXMax()</a>]. </td></tr>
     <tr><td class="paramname">yc</td><td>y coordinate for the center point [0..<a class="el" href="class_m_d___m_a_x_panel.html#adbc851ebf039c529e4cf1e751503e418">getYMax()</a>]. </td></tr>
     <tr><td class="paramname">r</td><td>radius of the circle. </td></tr>
+    <tr><td class="paramname">state</td><td>true - switch on; false - switch off. If omitted, default to true. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>false if any point is drawn outside the display, true otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a1fd7430213d6c895e8f2cbd4377227f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fd7430213d6c895e8f2cbd4377227f1">&#9670;&nbsp;</a></span>drawFillCircle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MD_MAXPanel::drawFillCircle </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>xc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>yc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>state</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Draw a filled circle given center and radius</p>
+<p>Draw a circle given center and radius. The LEDs for the border and fill will be turned on or off depending on the value supplied. The coordinates will be dereferenced into the device and column within the device, allowing the LEDs to be treated as a continuous pixel field.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xc</td><td>x coordinate for the center point [0..<a class="el" href="class_m_d___m_a_x_panel.html#a34e9ac92b8beb91335f59d304b1979d6">getXMax()</a>]. </td></tr>
+    <tr><td class="paramname">yc</td><td>y coordinate for the center point [0..<a class="el" href="class_m_d___m_a_x_panel.html#adbc851ebf039c529e4cf1e751503e418">getYMax()</a>]. </td></tr>
+    <tr><td class="paramname">r</td><td>radius of the circle. </td></tr>
+    <tr><td class="paramname">state</td><td>true - switch on; false - switch off. If omitted, default to true. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>false if any point is drawn outside the display, true otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a8d9f6090bd6dd5504f31eb9a59520dd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d9f6090bd6dd5504f31eb9a59520dd2">&#9670;&nbsp;</a></span>drawFillRectangle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MD_MAXPanel::drawFillRectangle </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>x1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>y1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>x2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>y2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>state</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Draw a filled rectangle given two diagonal vertices</p>
+<p>Draw a filled rectangle given the points across the diagonal. The LEDs inside and on the border will be turned on or off depending on the value supplied. The coordinates will be dereferenced into the device and column within the device, allowing the LEDs to be treated as a continuous pixel field.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x1</td><td>starting x coordinate for the point [0..<a class="el" href="class_m_d___m_a_x_panel.html#a34e9ac92b8beb91335f59d304b1979d6">getXMax()</a>]. </td></tr>
+    <tr><td class="paramname">y1</td><td>starting y coordinate for the point [0..<a class="el" href="class_m_d___m_a_x_panel.html#adbc851ebf039c529e4cf1e751503e418">getYMax()</a>]. </td></tr>
+    <tr><td class="paramname">x2</td><td>ending x coordinate for the point [0..<a class="el" href="class_m_d___m_a_x_panel.html#a34e9ac92b8beb91335f59d304b1979d6">getXMax()</a>]. </td></tr>
+    <tr><td class="paramname">y2</td><td>ending y coordinate for the point [0..<a class="el" href="class_m_d___m_a_x_panel.html#adbc851ebf039c529e4cf1e751503e418">getYMax()</a>]. </td></tr>
+    <tr><td class="paramname">state</td><td>true - switch on; false - switch off. If omitted, default to true. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>false if any point is drawn outside the display, true otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ad7304845a845877623462f1d4fd032af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7304845a845877623462f1d4fd032af">&#9670;&nbsp;</a></span>drawFillTriangle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool MD_MAXPanel::drawFillTriangle </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>x1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>y1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>x2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>y2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>x3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>y3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>state</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Draw a filled triangle given 3 vertices</p>
+<p>Draw a filled triangle given the all the corner points. The LED for the border and fill will be turned on or off depending on the value supplied. The coordinates will be dereferenced into the device and column within the device, allowing the LEDs to be treated as a continuous pixel field.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x1</td><td>first x coordinate for the point [0..<a class="el" href="class_m_d___m_a_x_panel.html#a34e9ac92b8beb91335f59d304b1979d6">getXMax()</a>]. </td></tr>
+    <tr><td class="paramname">y1</td><td>first y coordinate for the point [0..<a class="el" href="class_m_d___m_a_x_panel.html#adbc851ebf039c529e4cf1e751503e418">getYMax()</a>]. </td></tr>
+    <tr><td class="paramname">x2</td><td>second x coordinate for the point [0..<a class="el" href="class_m_d___m_a_x_panel.html#a34e9ac92b8beb91335f59d304b1979d6">getXMax()</a>]. </td></tr>
+    <tr><td class="paramname">y2</td><td>second y coordinate for the point [0..<a class="el" href="class_m_d___m_a_x_panel.html#adbc851ebf039c529e4cf1e751503e418">getYMax()</a>]. </td></tr>
+    <tr><td class="paramname">x3</td><td>third x coordinate for the point [0..<a class="el" href="class_m_d___m_a_x_panel.html#a34e9ac92b8beb91335f59d304b1979d6">getXMax()</a>]. </td></tr>
+    <tr><td class="paramname">y3</td><td>third y coordinate for the point [0..<a class="el" href="class_m_d___m_a_x_panel.html#adbc851ebf039c529e4cf1e751503e418">getYMax()</a>]. </td></tr>
     <tr><td class="paramname">state</td><td>true - switch on; false - switch off. If omitted, default to true. </td></tr>
   </table>
   </dd>
@@ -785,8 +983,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="adf62160a4b71e5d9fcc49563ca184e2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf62160a4b71e5d9fcc49563ca184e2a">&#9670;&nbsp;</a></span>drawText()</h2>
+<a id="aeb5cc45450a1f1258feae891761c1e09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb5cc45450a1f1258feae891761c1e09">&#9670;&nbsp;</a></span>drawText()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -806,7 +1004,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>psz</em>, </td>
         </tr>
         <tr>
@@ -1090,8 +1288,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad08d1ad2f515faf53ff770aa4386d06c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad08d1ad2f515faf53ff770aa4386d06c">&#9670;&nbsp;</a></span>getTextWidth()</h2>
+<a id="a64a0e701e1b0623c513d21146a3f7628"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64a0e701e1b0623c513d21146a3f7628">&#9670;&nbsp;</a></span>getTextWidth()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1099,7 +1297,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">uint16_t MD_MAXPanel::getTextWidth </td>
           <td>(</td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>psz</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1370,7 +1568,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_m_d___m_a_x_panel.html">MD_MAXPanel</a></li>
-    <li class="footer">Generated on Sun Jul 8 2018 16:04:37 for MD_MAXPanel LED Matrix Panel Arduino Library by
+    <li class="footer">Generated on Sat Sep 29 2018 08:06:06 for MD_MAXPanel LED Matrix Panel Arduino Library by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

@@ -71,8 +71,9 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 \page pageRevisionHistory Revision History
-pre-release version 1.1.2
+Oct 2018 version 1.2.0
 - Fixed reported WEMOS D1 compiler issues
+- Added polygon Fill functions contributed by AndreasPercher
 
 Jul 2018 version 1.1.1
 - Finalised preferred orientation for examples
@@ -208,15 +209,17 @@ public:
   /**
   * Clear the specified display area.
   *
-  * Clear the rectangular area specified by the coordinates.
+  * Clear the rectangular area specified by the coordinates by setting the pixels
+  * to the state specified (default is off).
   *
   * \param x1 the upper left x coordinate of the window
   * \param y1 the upper left y coordinate of the window
   * \param x2 the lower right x coordinate of the window
   * \param y2 the upper lower right y coordinate of the window
+  * \param state true - switch pixels on; false - switch pixels off. If omitted, default to false.
   * \return No return value.
   */
-  void clear(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2) { for (uint8_t i=x1; i<=x2; i++) drawVLine(i, y1, y2, false); };
+  void clear(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, bool state = false) { for (uint8_t i=x1; i<=x2; i++) drawVLine(i, y1, y2, state); };
 
   /**
   * Get a pointer to the instantiated graphics object.
@@ -371,6 +374,23 @@ public:
   bool drawRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, bool state = true);
 
   /**
+  * Draw a filled rectangle given two diagonal vertices
+  *
+  * Draw a filled rectangle given the points across the diagonal. The LEDs inside 
+  * and on the border will be turned on or off depending on the value supplied. 
+  * The coordinates will be dereferenced into the device and column within the 
+  * device, allowing the LEDs to be treated as a continuous pixel field.
+  *
+  * \param x1    starting x coordinate for the point [0..getXMax()].
+  * \param y1    starting y coordinate for the point [0..getYMax()].
+  * \param x2    ending x coordinate for the point [0..getXMax()].
+  * \param y2    ending y coordinate for the point [0..getYMax()].
+  * \param state true - switch on; false - switch off. If omitted, default to true.
+  * \return false if any point is drawn outside the display, true otherwise.
+  */
+  bool drawFillRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, bool state = true);
+
+  /**
   * Draw a triangle given 3 vertices
   *
   * Draw a triangle given the all the corner points. The LED will be turned on or
@@ -389,6 +409,26 @@ public:
   */
   bool drawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, bool state = true);
 
+  /**
+  * Draw a filled triangle given 3 vertices
+  *
+  * Draw a filled triangle given the all the corner points. The LED for 
+  * the border and fill will be turned on or off depending on the value 
+  * supplied. The coordinates will be dereferenced into the device and 
+  * column within the device, allowing the LEDs to be treated as a 
+  * continuous pixel field.
+  *
+  * \param x1    first x coordinate for the point [0..getXMax()].
+  * \param y1    first y coordinate for the point [0..getYMax()].
+  * \param x2    second x coordinate for the point [0..getXMax()].
+  * \param y2    second y coordinate for the point [0..getYMax()].
+  * \param x3    third x coordinate for the point [0..getXMax()].
+  * \param y3    third y coordinate for the point [0..getYMax()].
+  * \param state true - switch on; false - switch off. If omitted, default to true.
+  * \return false if any point is drawn outside the display, true otherwise.
+  */
+  bool drawFillTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, bool state = true);
+    
   /**
   * Draw a quadrilateral given 4 vertices
   *
@@ -413,6 +453,10 @@ public:
   /**
    * Draw a circle given center and radius
    *
+   * Draw a circle given center and radius. The LEDs will be turned 
+   * on or off depending on the value supplied. The coordinates will 
+   * be dereferenced into the device and column within the device, 
+   * allowing the LEDs to be treated as a continuous pixel field.
    *
    * \param xc    x coordinate for the center point [0..getXMax()].
    * \param yc    y coordinate for the center point [0..getYMax()].
@@ -421,6 +465,23 @@ public:
    * \return false if any point is drawn outside the display, true otherwise.
    */
   bool drawCircle(uint16_t xc, uint16_t yc, uint16_t r, bool state = true);
+
+  /**
+  * Draw a filled circle given center and radius
+  *
+  * Draw a circle given center and radius. The LEDs for the border
+  * and fill will be turned on or off depending on the value supplied.
+  * The coordinates will be dereferenced into the device and column
+  * within the device, allowing the LEDs to be treated as a continuous
+  * pixel field.
+  *
+  * \param xc    x coordinate for the center point [0..getXMax()].
+  * \param yc    y coordinate for the center point [0..getYMax()].
+  * \param r     radius of the circle.
+  * \param state true - switch on; false - switch off. If omitted, default to true.
+  * \return false if any point is drawn outside the display, true otherwise.
+  */
+  bool drawFillCircle(uint16_t xc, uint16_t yc, uint16_t r, bool state = true);
 
   /**
    * Get the status of a single LED, addressed as a pixel.
@@ -498,7 +559,7 @@ public:
   * \param psz  the text string as a nul terminated character array.
   * \return the length in pixels.
   */
-  uint16_t getTextWidth(char *psz);
+  uint16_t getTextWidth(const char *psz);
 
   /**
   * Get the height of the current font in pixels.
@@ -523,7 +584,7 @@ public:
   * \param state true - switch on; false - switch off. If omitted, default to true.
   * \return the length of the text in pixels.
   */
-  uint16_t drawText(uint16_t x, uint16_t y, char *psz, rotation_t rot = ROT_0, bool state = true);
+  uint16_t drawText(uint16_t x, uint16_t y, const char *psz, rotation_t rot = ROT_0, bool state = true);
 
   /** @} */
 
@@ -540,6 +601,7 @@ private:
   bool _rotatedDisplay; // true if the display is rotated
 
   bool drawCirclePoints(uint16_t xc, uint16_t yc, uint16_t x, uint16_t y, bool state);
+  bool drawCircleLines(uint16_t xc, uint16_t yc, uint16_t x, uint16_t y, bool state);
   uint16_t Y2Row(uint16_t x, uint16_t y);   // Convert y coord to linear coord
   uint16_t X2Col(uint16_t x, uint16_t y);   // Convert x coord to linear coord
 };

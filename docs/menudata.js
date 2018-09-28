@@ -38,7 +38,15 @@ var menudata={children:[
 {text:"s",url:"functions.html#index_s"},
 {text:"u",url:"functions.html#index_u"},
 {text:"~",url:"functions.html#index_0x7e"}]},
-{text:"Functions",url:"functions_func.html"},
+{text:"Functions",url:"functions_func.html",children:[
+{text:"b",url:"functions_func.html#index_b"},
+{text:"c",url:"functions_func.html#index_c"},
+{text:"d",url:"functions_func.html#index_d"},
+{text:"g",url:"functions_func.html#index_g"},
+{text:"m",url:"functions_func.html#index_m"},
+{text:"s",url:"functions_func.html#index_s"},
+{text:"u",url:"functions_func.html#index_u"},
+{text:"~",url:"functions_func.html#index_0x7e"}]},
 {text:"Enumerations",url:"functions_enum.html"},
 {text:"Enumerator",url:"functions_eval.html"}]}]},
 {text:"Files",url:"files.html",children:[
