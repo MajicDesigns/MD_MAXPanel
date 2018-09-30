@@ -71,7 +71,10 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 \page pageRevisionHistory Revision History
-Oct 2018 version 1.2.0
+Oct 2018 version 1.2.1
+- Updated library.properties and READ.MD files
+
+Sep 2018 version 1.2.0
 - Fixed reported WEMOS D1 compiler issues
 - Added polygon Fill functions contributed by AndreasPercher
 
