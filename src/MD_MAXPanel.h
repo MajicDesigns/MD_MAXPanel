@@ -38,8 +38,8 @@ follow the example.
 ![MD_MAXPanel Module Arrangement] (MAXPanel_Diagram.jpg "MD_MAXPanel Module Arrangement")
 
 The wiring for the modules can be simplified as the only signal that needs to be truly 
-cascaded is the MD_MAX72xx IC Data Out to the next IC Data In. The rest can be paralled,
-as shown in the photo.
+cascaded is the MD_MAX72xx IC Data Out to the next IC Data In. The rest can be wired in 
+parallel, as shown in the photo.
 
 ![MD_MAXPanel Module Wiring] (MAXPanel_Wiring.jpg "MD_MAXPanel Module Wiring")
 
@@ -71,6 +71,9 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 \page pageRevisionHistory Revision History
+Oct 2018 version 1.2.2
+- Corrected some documentation mistakes
+
 Oct 2018 version 1.2.1
 - Updated library.properties and READ.MD files
 
@@ -79,7 +82,7 @@ Sep 2018 version 1.2.0
 - Added polygon Fill functions contributed by AndreasPercher
 
 Jul 2018 version 1.1.1
-- Finalised preferred orientation for examples
+- Finalized preferred orientation for examples
 
 Jul 2018 version 1.1.0
 - Renamed textRotation_t to rotation_t

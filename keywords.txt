@@ -20,8 +20,13 @@ getPoint	KEYWORD2
 drawLine	KEYWORD2
 drawHLine	KEYWORD2
 drawVLine	KEYWORD2
+drawRecangle	KEYWORD2
+drawFillRectangle	KEYWORD2
 drawTriangle	KEYWORD2
+drawFillTriangle	KEYWORD2
 drawCircle	KEYWORD2
+drawFillCircle	KEYWORD2
+drawQuadrilateral	KEYWORD2
 getXMax	KEYWORD2
 getYMax	KEYWORD2
 getGraphicObject	KEYWORD2
