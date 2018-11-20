@@ -203,7 +203,7 @@ bool MD_MAXPanel::drawRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t 
   return(b);
 }
 
-bool MD_MAXPanel::drawFillRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, bool state = true)
+bool MD_MAXPanel::drawFillRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, bool state)
 {
   bool b = true;
   bool u = _updateEnabled;
@@ -257,7 +257,7 @@ bool MD_MAXPanel::drawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y
 }
 
 /*
-bool MD_MAXPanel::drawFillTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, bool state = true)
+bool MD_MAXPanel::drawFillTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, bool state)
 // draw an arbitrary filled triangle given the 3 corner vertices
 // Uses slope method, originally from Adafruit Industries
 {
@@ -338,7 +338,7 @@ bool MD_MAXPanel::drawFillTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16
 }
 */
 
-bool MD_MAXPanel::drawFillTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, bool state = true)
+bool MD_MAXPanel::drawFillTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, bool state)
 // Fill a triangle - Bresenham method
 // Original from http://www.sunshine2k.de/coding/java/TriangleRasterization/TriangleRasterization.html
 {
@@ -574,7 +574,7 @@ bool MD_MAXPanel::drawCircleLines(uint16_t xc, uint16_t yc, uint16_t x, uint16_t
   return(b);
 }
 
-bool MD_MAXPanel::drawFillCircle(uint16_t xc, uint16_t yc, uint16_t r, bool state = true)
+bool MD_MAXPanel::drawFillCircle(uint16_t xc, uint16_t yc, uint16_t r, bool state)
 // Draw a filled circle given center and radius
 // Bresenhams Algorith from http://www.pracspedia.com/CG/bresenhamcircle.html
 {
