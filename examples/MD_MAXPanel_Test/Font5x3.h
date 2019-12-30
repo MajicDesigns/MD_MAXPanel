@@ -1,4 +1,7 @@
-MD_MAX72XX::fontType_t _Fixed_5x3[] PROGMEM = {
+#pragma once
+
+MD_MAX72XX::fontType_t _Fixed_5x3[] PROGMEM = 
+{
   'F', 1, 32, 127, 5,
 	2, 0, 0,		// 32 - 'Space'
 	1, 23,		// 33 - '!'

@@ -37,8 +37,6 @@ uint16_t MD_MAXPanel::drawText(uint16_t x, uint16_t y, const char *psz, rotation
   uint8_t size;
   uint16_t sum = 0;
 
-  int16_t nextPos;
-
   PRINT("\ndrawText: ", psz);
   PRINT(" height ", height);
   while (*psz != '\0')
