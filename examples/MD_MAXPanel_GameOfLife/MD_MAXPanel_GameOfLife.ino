@@ -67,10 +67,10 @@ MD_MAXPanel mp = MD_MAXPanel(HARDWARE_TYPE, CS_PIN, X_DEVICES, Y_DEVICES);
 // Arbitrary pins
 // MD_MAXPanel mx = MD_MAXPanel(HARWARE_TYPE, DATA_PIN, CLK_PIN, CS_PIN, X_DEVICES, Y_DEVICES);
 
-#define SWITCH_PIN 6
+const uint8_t SWITCH_PIN = 6;
 
 // We always wait a bit between updates of the display
-#define  TICK_TIME  150  // in milliseconds
+const uint16_t TICK_TIME = 150;  // in milliseconds
 
 void setup(void)
 {
