@@ -1,4 +1,5 @@
 <map id="src/MD_MAXPanel_lib.h" name="src/MD_MAXPanel_lib.h">
-<area shape="rect" id="node3" href="$_m_d___m_a_x_panel_8cpp.html" title="Implements class graphics methods. " alt="" coords="5,80,160,107"/>
-<area shape="rect" id="node5" href="$_m_d___m_a_x_panel___font_8cpp.html" title="Implements font and text methods. " alt="" coords="185,80,375,107"/>
+<area shape="rect" id="node1" title="Includes library only definitions." alt="" coords="100,5,263,32"/>
+<area shape="rect" id="node3" href="$_m_d___m_a_x_panel_8cpp.html" title="Implements class graphics methods." alt="" coords="5,80,160,107"/>
+<area shape="rect" id="node5" href="$_m_d___m_a_x_panel___font_8cpp.html" title="Implements font and text methods." alt="" coords="185,80,375,107"/>
 </map>

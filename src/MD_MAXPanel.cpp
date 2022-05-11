@@ -51,6 +51,13 @@ _xDevices(xDevices), _yDevices(yDevices), _rotatedDisplay(false)
   _killOnDestruct = false;
 }
 
+MD_MAXPanel::MD_MAXPanel(MD_MAX72XXX::moduleType_t mod, SPIClass &spi, uint8_t csPin, uint8_t xDevices, uint8_t yDevices) :
+_xDevices(xDevices), _yDevices(yDevices), _rotatedDisplay(false)
+{
+  _D = new MD_MAX72XX(mod, spi, csPin, xDevices*yDevices);
+  _killOnDestruct = true;
+}
+
 void MD_MAXPanel::begin(void)
 {
   _D->begin();

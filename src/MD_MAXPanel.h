@@ -18,7 +18,7 @@ This library implements functions that allows cascaded MAX72xx LED modules
 to use the LED matrix as an pixel addressable display device, as shown in the 
 photo below.
 
-![MD_MAXPanel Display Panel] (MAXPanel_Display.jpg "MD_MAXPanel Display Panel")
+\image{inline} html MAXPanel_Display.jpg "MD_MAXPanel Display Panel"
 
 The MAX7219/MAX7221 are compact, serial input/output display drivers that
 interface microprocessors to 7-segment numeric LED displays of up to 8 digits,
@@ -35,13 +35,13 @@ arranged in a zig-zag fashion, as shown in the figure below. The number of modul
 per row and the number of rows may vary, but the arrangement of the modules must 
 follow the example.
 
-![MD_MAXPanel Module Arrangement] (MAXPanel_Diagram.jpg "MD_MAXPanel Module Arrangement")
+\image{inline} html MAXPanel_Diagram.jpg "MD_MAXPanel Module Arrangement"
 
 The wiring for the modules can be simplified as the only signal that needs to be truly 
 cascaded is the MD_MAX72xx IC Data Out to the next IC Data In. The rest can be wired in 
 parallel, as shown in the photo.
 
-![MD_MAXPanel Module Wiring] (MAXPanel_Wiring.jpg "MD_MAXPanel Module Wiring")
+\image{inline} html MAXPanel_Wiring.jpg "MD_MAXPanel Module Wiring"
 
 Topics
 ------
@@ -71,8 +71,9 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 \page pageRevisionHistory Revision History
-xxx 20xx version x.x.x
+May 2022 version 1.3.0
 - Added LEDaSketch example
+- Added constructor with specified SPI interface
 
 Nov 2018 version 1.2.3
 - Corrected default parameters for WEMOS compiler 
@@ -161,7 +162,7 @@ public:
   MD_MAXPanel(MD_MAX72XX::moduleType_t mod, uint8_t dataPin, uint8_t clkPin, uint8_t csPin, uint8_t xDevices, uint8_t yDevices);
 
   /**
-   * Class Constructor - SPI hardware interface.
+   * Class Constructor - default SPI hardware interface.
    *
    * Instantiate a new instance of the class. The parameters passed are used to
    * connect the software to the hardware. Multiple instances may co-exist
@@ -191,6 +192,25 @@ public:
   MD_MAXPanel(MD_MAX72XX *D, uint8_t xDevices, uint8_t yDevices);
 
   /**
+   * Class Constructor - specify SPI hardware interface.
+   *
+   * Instantiate a new instance of the class with a specified SPI object. This
+   * allows a specific SPI interface to be specified for architectures with more 
+   * than one hardware SPI interface. 
+   * The parameters passed are used to connect the software to the hardware. 
+   * Multiple instances may co-exist but they should not share the same hardware 
+   * CS pin (SPI interface). The dataPin and the clockPin are defined by the Arduino 
+   * hardware definition for the specified SPI interface (SPI MOSI and SCK signals).
+   *
+   * \param mod      module type used in this application. One of the moduleType_t values.
+   * \param spi      reference to the SPI object to use for comms to the device
+   * \param csPin    output for selecting the device.
+   * \param xDevices number of LED matrix modules for the width of the panel.
+   * \param yDevices number of LED matrix modules for the height of the panel.
+   */
+  MD_MAXPanel(MD_MAX72XXX::moduleType_t mod, SPIClass &spi, uint8_t csPin, uint8_t xDevices, uint8_t yDevices);
+
+  /**
    * Initialize the object.
    *
    * Initialize the object data. This needs to be called during setup() to initialize 
@@ -214,7 +234,6 @@ public:
   /**
   * Clear all the display data on all the display devices.
   *
-  * \return No return value.
   */
   void clear(void) { _D->clear(0, _xDevices*_yDevices); };
 
@@ -229,7 +248,6 @@ public:
   * \param x2 the lower right x coordinate of the window
   * \param y2 the upper lower right y coordinate of the window
   * \param state true - switch pixels on; false - switch pixels off. If omitted, default to false.
-  * \return No return value.
   */
   void clear(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, bool state = false) { for (uint8_t i=x1; i<=x2; i++) drawVLine(i, y1, y2, state); };
 
@@ -276,7 +294,6 @@ public:
   * The default is ROT_O (unrotated).
   * 
   * \param r rotation_t value for the current rotation (ROT_0 or ROT_90);
-  * \return No return value
   */
   void setRotation(rotation_t r) { _rotatedDisplay = (r == ROT_90) || (r == ROT_270); }
 
@@ -288,7 +305,6 @@ public:
   * time using using a call to update() with no parameters.
   *
   * \param state  true to enable update, false to suspend updates.
-  * \return No return value.
   */
   void update(bool state) { _updateEnabled = state; _D->control(MD_MAX72XX::UPDATE, state ? MD_MAX72XX::ON : MD_MAX72XX::OFF); };
 
@@ -298,7 +314,6 @@ public:
   * Force a display update of any changes since the last update. This overrides the
   * current setting for display updates.
   *
-  * \return No return value.
   */
   void update() { _D->update(); };
 
@@ -308,7 +323,6 @@ public:
   * Set the intensity (brightness) of the display.
   *
   * \param intensity the intensity to set the display (0-15).
-  * \return No return value.
   */
   void setIntensity(uint8_t intensity) { _D->control(MD_MAX72XX::INTENSITY, intensity); }
 
@@ -539,7 +553,6 @@ public:
   * Passing nullptr resets to the library default font.
   *
   * \param fontDef  Pointer to the font definition to be used.
-  * \return No return value.
   */
   void setFont(MD_MAX72XX::fontType_t *fontDef) { _D->setFont(fontDef); }
   
@@ -549,7 +562,6 @@ public:
   * Set number of pixel columns between each character in a displayed text.
   *
   * \param spacing  the spacing between characters.
-  * \return No return value.
   */
   void setCharSpacing(uint8_t spacing) { _charSpacing = spacing; }
 

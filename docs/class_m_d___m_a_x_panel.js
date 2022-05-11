@@ -9,10 +9,11 @@ var class_m_d___m_a_x_panel =
     [ "MD_MAXPanel", "class_m_d___m_a_x_panel.html#afa7277ff9467d05a4414ed97adbee3d3", null ],
     [ "MD_MAXPanel", "class_m_d___m_a_x_panel.html#acb01a783604fd1ad1ffdf6cff47b6dbb", null ],
     [ "MD_MAXPanel", "class_m_d___m_a_x_panel.html#a9db6b15004a584664a154ce795dbb606", null ],
+    [ "MD_MAXPanel", "class_m_d___m_a_x_panel.html#a3c10e266eefbf41bf3e5d08cd79cd18c", null ],
     [ "~MD_MAXPanel", "class_m_d___m_a_x_panel.html#a3451a0cfb5dea445e1989c737a29f1ec", null ],
     [ "begin", "class_m_d___m_a_x_panel.html#a94f9d07106a260a5dd37649c3c0da8f1", null ],
-    [ "clear", "class_m_d___m_a_x_panel.html#a052fa07a510eb92b6ffa3605f75a7dfd", null ],
     [ "clear", "class_m_d___m_a_x_panel.html#a17d910342f29983c059b4fad864d74c7", null ],
+    [ "clear", "class_m_d___m_a_x_panel.html#a052fa07a510eb92b6ffa3605f75a7dfd", null ],
     [ "drawCircle", "class_m_d___m_a_x_panel.html#ad8fe47bce046f97b03afe0200a08f50c", null ],
     [ "drawFillCircle", "class_m_d___m_a_x_panel.html#a1fd7430213d6c895e8f2cbd4377227f1", null ],
     [ "drawFillRectangle", "class_m_d___m_a_x_panel.html#a8d9f6090bd6dd5504f31eb9a59520dd2", null ],
@@ -26,7 +27,7 @@ var class_m_d___m_a_x_panel =
     [ "drawVLine", "class_m_d___m_a_x_panel.html#ad84af77c2070832bdc4f64189ebb762f", null ],
     [ "getCharSpacing", "class_m_d___m_a_x_panel.html#a2f9de9874f1b4033d9be5145ef298ba2", null ],
     [ "getFontHeight", "class_m_d___m_a_x_panel.html#a21b7b9c7328b3a0969cc9bade6877574", null ],
-    [ "getGraphicObject", "class_m_d___m_a_x_panel.html#ae899a4a7851b017261c7d44aae39a74a", null ],
+    [ "getGraphicObject", "class_m_d___m_a_x_panel.html#a7d63063d5df705a541e19f1b2f7ac840", null ],
     [ "getPoint", "class_m_d___m_a_x_panel.html#a399ba66032092d6f64c2514933f8560b", null ],
     [ "getRotation", "class_m_d___m_a_x_panel.html#a94b1d455cb28c689a767552933ef7f58", null ],
     [ "getTextWidth", "class_m_d___m_a_x_panel.html#a64a0e701e1b0623c513d21146a3f7628", null ],
@@ -37,6 +38,6 @@ var class_m_d___m_a_x_panel =
     [ "setIntensity", "class_m_d___m_a_x_panel.html#a3e1d15c8e90d3a9bbd65fdadcad347b0", null ],
     [ "setPoint", "class_m_d___m_a_x_panel.html#ad7047c3aad849e77af5f74fc31b6fc59", null ],
     [ "setRotation", "class_m_d___m_a_x_panel.html#abcdcb531a01ac207997dd3b083d31b15", null ],
-    [ "update", "class_m_d___m_a_x_panel.html#abcaac4635c9e377c7fe57d072589e752", null ],
-    [ "update", "class_m_d___m_a_x_panel.html#a592a252dfe9db3488b98737bfb959a91", null ]
+    [ "update", "class_m_d___m_a_x_panel.html#a592a252dfe9db3488b98737bfb959a91", null ],
+    [ "update", "class_m_d___m_a_x_panel.html#abcaac4635c9e377c7fe57d072589e752", null ]
 ];
