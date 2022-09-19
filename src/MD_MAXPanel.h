@@ -71,6 +71,9 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 \page pageRevisionHistory Revision History
+Sep 2022 version 1.3.1
+- Updated illegal repeat for default parameters in function
+
 May 2022 version 1.3.0
 - Added LEDaSketch example
 - Added constructor with specified SPI interface
