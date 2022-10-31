@@ -71,6 +71,9 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 \page pageRevisionHistory Revision History
+Nov 2022 version 1.3.2
+- Fixed incorrect reference to MD_MAX72XX in constructor
+
 Sep 2022 version 1.3.1
 - Updated illegal repeat for default parameters in function
 
@@ -211,7 +214,7 @@ public:
    * \param xDevices number of LED matrix modules for the width of the panel.
    * \param yDevices number of LED matrix modules for the height of the panel.
    */
-  MD_MAXPanel(MD_MAX72XXX::moduleType_t mod, SPIClass &spi, uint8_t csPin, uint8_t xDevices, uint8_t yDevices);
+  MD_MAXPanel(MD_MAX72XX::moduleType_t mod, SPIClass &spi, uint8_t csPin, uint8_t xDevices, uint8_t yDevices);
 
   /**
    * Initialize the object.
