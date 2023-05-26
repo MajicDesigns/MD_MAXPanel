@@ -409,12 +409,12 @@ void text(MD_MAX72XX::fontType_t *fontData)
 
 void setup(void)
 {
-  mp.begin();
-
 #if  DEBUG
   Serial.begin(57600);
 #endif
   PRINTS("\n[MD_MAXPanel Test & Demo]");
+
+  if (!mp.begin()) PRINTS("\nMD_MAXPanel library failed to initialize.");
 }
 
 void loop(void)

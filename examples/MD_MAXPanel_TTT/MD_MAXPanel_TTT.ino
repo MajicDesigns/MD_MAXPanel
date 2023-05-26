@@ -326,7 +326,7 @@ void setup()
 #endif
   PRINTS("\n[MD_MAXPanel_TTT]");
 
-  mp.begin();
+  if (!mp.begin()) PRINTS("\nMD_MAXPanel library failed to initialize.");
   mp.setFont(_Fixed_5x3);
   mp.setIntensity(4);
   //mp.setRotation(MD_MAXPanel::ROT_90);

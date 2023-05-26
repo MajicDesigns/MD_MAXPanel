@@ -691,7 +691,7 @@ void setup()
 
   randomSeed(seedOut(31, RANDOM_SEED_PORT));
 
-  mp.begin();
+  if (!mp.begin()) PRINTS("\nMD_MAXPanel library failed to initialize.");
   mp.setFont(_Fixed_5x3);
   mp.setIntensity(4);
   //mp.setRotation(MD_MAXPanel::ROT_90);

@@ -69,7 +69,7 @@ void setup(void)
   pinMode(XAXIS_PIN, INPUT);
   pinMode(YAXIS_PIN, INPUT);
 
-  mp.begin();
+  if (!mp.begin()) PRINTS("\nMD_MAXPanel library failed to initialize.");
   mp.clear();
 }
 

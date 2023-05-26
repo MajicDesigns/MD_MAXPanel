@@ -5,7 +5,7 @@ See header file for comments
 
 This file contains class and hardware related methods.
 
-Copyright (C) 2018 Marco Colli. All rights reserved.
+Copyright (C) 2018-23 Marco Colli. All rights reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -58,11 +58,14 @@ _xDevices(xDevices), _yDevices(yDevices), _rotatedDisplay(false)
   _killOnDestruct = true;
 }
 
-void MD_MAXPanel::begin(void)
+bool MD_MAXPanel::begin(void)
 {
-  _D->begin();
+  bool b = _D->begin();
+
   _charSpacing = CHAR_SPACING_DEFAULT;
   _updateEnabled = true;
+
+  return(b);
 }
 
 MD_MAXPanel::~MD_MAXPanel(void)

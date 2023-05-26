@@ -54,7 +54,7 @@ Topics
 If you like and use this library please consider making a small donation using [PayPal](https://paypal.me/MajicDesigns/4USD)
 
 \page pageCopyright Copyright
-Copyright (C) 2018 Marco Colli. All rights reserved.
+Copyright (C) 2018-23 Marco Colli. All rights reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -71,6 +71,10 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 \page pageRevisionHistory Revision History
+Jun 2023 version 1.4.0
+- begin() returns bool value
+- Added Scoreboard examples SB_Simple and SB_BBall
+
 Nov 2022 version 1.3.2
 - Fixed incorrect reference to MD_MAX72XX in constructor
 
@@ -221,8 +225,10 @@ public:
    *
    * Initialize the object data. This needs to be called during setup() to initialize 
    * new data for the class that cannot be done during the object creation.
+   * 
+   * \return true if initialized with no error, false otherwise.
    */
-  void begin(void);
+  bool begin(void);
 
   /**
    * Class Destructor.
@@ -604,8 +610,7 @@ public:
   /**
   * Draw text on the display.
   *
-  * Get the specified of height of the current font in pixels. All the characters of the
-  * font will fit with this height.
+  * Draw the text with top left coordinates (x,y) with specified rotation.
   *
   * \param x   the x coordinate for the top left corner of the first character.
   * \param y   the Y coordinate for the top left corner of the first character.

@@ -9,7 +9,7 @@ var class_m_d___m_a_x_panel =
     [ "MD_MAXPanel", "class_m_d___m_a_x_panel.html#afa7277ff9467d05a4414ed97adbee3d3", null ],
     [ "MD_MAXPanel", "class_m_d___m_a_x_panel.html#acb01a783604fd1ad1ffdf6cff47b6dbb", null ],
     [ "MD_MAXPanel", "class_m_d___m_a_x_panel.html#a9db6b15004a584664a154ce795dbb606", null ],
-    [ "MD_MAXPanel", "class_m_d___m_a_x_panel.html#a3c10e266eefbf41bf3e5d08cd79cd18c", null ],
+    [ "MD_MAXPanel", "class_m_d___m_a_x_panel.html#a3af7c5a14670cdad57e046919939c3dd", null ],
     [ "~MD_MAXPanel", "class_m_d___m_a_x_panel.html#a3451a0cfb5dea445e1989c737a29f1ec", null ],
     [ "begin", "class_m_d___m_a_x_panel.html#a94f9d07106a260a5dd37649c3c0da8f1", null ],
     [ "clear", "class_m_d___m_a_x_panel.html#a17d910342f29983c059b4fad864d74c7", null ],

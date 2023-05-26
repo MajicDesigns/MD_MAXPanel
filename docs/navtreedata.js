@@ -25,7 +25,7 @@
 var NAVTREE =
 [
   [ "MD_MAXPanel LED Matrix Panel Arduino Library", "index.html", [
-    [ "Arduino LED Matrix Panel Library", "index.html", null ],
+    [ "Arduino LED Matrix Panel Library", "index.html", "index" ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
