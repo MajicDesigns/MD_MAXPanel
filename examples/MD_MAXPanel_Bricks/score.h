@@ -24,7 +24,7 @@ public:
 
   void limit(uint16_t m)
   {
-    erase();    // width may change, so delete with the curret parameters
+    erase();    // width may change, so delete with the current parameters
 
     _limit = m;
     // work out how many digits this is

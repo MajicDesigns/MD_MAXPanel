@@ -81,7 +81,7 @@ void setup(void)
 
   pinMode(SWITCH_PIN, INPUT_PULLUP);
   
-  mp.begin();
+  if (!mp.begin()) PRINTS("\nMD_MAXPanel library failed to initialize.");
   mp.clear();
   randomSeed(seedOut(31, RANDOM_SEED_PORT));
 }

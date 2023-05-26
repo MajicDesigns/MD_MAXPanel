@@ -26,7 +26,7 @@ var NAVTREEINDEX0 =
 "class_m_d___m_a_x_panel.html#a3451a0cfb5dea445e1989c737a29f1ec":[1,0,0,5],
 "class_m_d___m_a_x_panel.html#a34e9ac92b8beb91335f59d304b1979d6":[1,0,0,26],
 "class_m_d___m_a_x_panel.html#a399ba66032092d6f64c2514933f8560b":[1,0,0,23],
-"class_m_d___m_a_x_panel.html#a3c10e266eefbf41bf3e5d08cd79cd18c":[1,0,0,4],
+"class_m_d___m_a_x_panel.html#a3af7c5a14670cdad57e046919939c3dd":[1,0,0,4],
 "class_m_d___m_a_x_panel.html#a3e1d15c8e90d3a9bbd65fdadcad347b0":[1,0,0,30],
 "class_m_d___m_a_x_panel.html#a592a252dfe9db3488b98737bfb959a91":[1,0,0,33],
 "class_m_d___m_a_x_panel.html#a64a0e701e1b0623c513d21146a3f7628":[1,0,0,25],
@@ -62,7 +62,11 @@ var NAVTREEINDEX0 =
 "functions_func.html":[1,2,1],
 "globals.html":[2,1,0],
 "globals_defs.html":[2,1,1],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
+"page_copyright.html":[0,2],
+"page_donation.html":[0,3],
+"page_revision_history.html":[0,1],
+"page_software.html":[0,0],
 "pages.html":[]
 };
