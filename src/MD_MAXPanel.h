@@ -71,6 +71,12 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 \page pageRevisionHistory Revision History
+Oct 2025 version 1.5.1
+- Fixed incorrect case dependency in library.properties
+
+Nov 2023 version 1.5.0
+- Added getXRange() and getYRange() methods
+
 Jun 2023 version 1.4.0
 - begin() returns bool value
 - Added Scoreboard examples SB_Simple and SB_BBall
@@ -278,18 +284,36 @@ public:
    * 
    * Depends on the rotation status of the display.
    *
-   * \return uint8_t the maximum X coordinate.
+   * \return uint16_t representing the maximum X coordinate.
    */
   uint16_t getXMax(void);
+
+  /**
+   * Gets the range of X coordinate.
+   *
+   * Depends on the rotation status of the display.
+   *
+   * \return uint16_t representing the total number of columns.
+   */
+  inline uint16_t getXRange(void) { return (getXMax() + 1); }
 
   /**
    * Gets the maximum Y coordinate.
    *
    * Depends on the rotation status of the display.
    *
-   * \return uint16_t representing the number of columns.
+   * \return uint16_t representing the maximum Y coordinate.
    */
   uint16_t getYMax(void);
+
+  /**
+   * Gets the range of Y coordinate.
+   *
+   * Depends on the rotation status of the display.
+   *
+   * \return uint16_t representing the total number of rows.
+   */
+  inline uint16_t getYRange(void) { return(getYMax() + 1); }
 
   /**
    * Get the rotation status of the display
