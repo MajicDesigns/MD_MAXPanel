@@ -71,6 +71,9 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 \page pageRevisionHistory Revision History
+Oct 2025 version 1.4.1
+- Fixed incorrect case for library.properties dependency
+
 Jun 2023 version 1.4.0
 - begin() returns bool value
 - Added Scoreboard examples SB_Simple and SB_BBall
